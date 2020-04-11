@@ -2,8 +2,8 @@
 using System.IO;
 using System.Text;
 using CefSharp;
+using CefSharp.Extensions.Interception;
 using Newtonsoft.Json;
-using SkypeWebPageHost.CefSharpExtensions.Interception;
 using SkypeWebPageHost.Protocol.Signaling.CallNotification;
 
 namespace SkypeWebPageHost.Container

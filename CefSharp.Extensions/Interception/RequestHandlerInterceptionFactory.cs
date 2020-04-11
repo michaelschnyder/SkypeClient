@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using CefSharp;
 using CefSharp.Handler;
 
-namespace SkypeWebPageHost.CefSharpExtensions.Interception
+namespace CefSharp.Extensions.Interception
 {
     public class RequestHandlerInterceptionFactory : RequestHandler
     {

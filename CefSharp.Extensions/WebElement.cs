@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using CefSharp;
 using CefSharp.Internals;
-using CefSharp.Wpf;
 
-namespace SkypeWebPageHost.CefSharpExtensions
+namespace CefSharp.Extensions
 {
     public class WebElement
     {

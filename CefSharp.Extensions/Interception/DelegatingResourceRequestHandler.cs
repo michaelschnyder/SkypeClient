@@ -1,9 +1,8 @@
 ﻿using System;
 using System.IO;
-using CefSharp;
 using CefSharp.Handler;
 
-namespace SkypeWebPageHost.CefSharpExtensions.Interception
+namespace CefSharp.Extensions.Interception
 {
     public class DelegatingResourceRequestHandler : ResourceRequestHandler
     {
