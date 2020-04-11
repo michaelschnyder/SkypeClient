@@ -12,7 +12,11 @@ namespace SkypeWebPageHost
         {
             if (e.Args.Length == 2)
             {
-                MainWindow wnd = new MainWindow(e.Args[0], e.Args[1]);
+                MainWindow wnd = new MainWindow();
+
+                var skypeApp = new SkypeApp(wnd.Browser);
+                skypeApp.Login(e.Args[0], e.Args[1]);
+
 
                 wnd.Show();
                 base.OnStartup(e);

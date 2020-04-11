@@ -8,7 +8,7 @@ namespace SkypeWebPageHost
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow(string user, string password)
+        public MainWindow()
         {
             InitializeComponent();
 
@@ -16,9 +16,6 @@ namespace SkypeWebPageHost
             {
                 // if (!Browser.IsDisposed) Browser.ShowDevTools();
             };
-
-            var skypeApp = new SkypeApp(this.Browser);
-            skypeApp.Login(user, password);
         }
     }
 }
