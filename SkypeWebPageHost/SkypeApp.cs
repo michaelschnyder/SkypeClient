@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 using CefSharp;
+using CefSharp.Internals;
 using CefSharp.Wpf;
 using SkypeWebPageHost.CefSharpExtensions;
 using SkypeWebPageHost.CefSharpExtensions.Interception;
@@ -12,10 +14,10 @@ namespace SkypeWebPageHost
     {
         private static string SkypeWebAppUrl = "https://web.skype.com/";
 
-        private readonly ChromiumWebBrowser _browser;
+        private readonly IRenderWebBrowser _browser;
         private readonly WebElement _webElement;
 
-        public SkypeApp(ChromiumWebBrowser browser)
+        public SkypeApp(IRenderWebBrowser browser)
         {
             _browser = browser;
             _webElement = new WebElement(browser);
@@ -41,10 +43,35 @@ namespace SkypeWebPageHost
 
         public void Login(string user, string password)
         {
-            _browser.Address = SkypeWebAppUrl;
+            var callerDispatcher = Dispatcher.CurrentDispatcher;
 
             Task.Run(async () =>
             {
+                try
+                {
+                    bool waitForInitialization = true;
+                    while (waitForInitialization)
+                    {
+                        bool isInitialized = false;
+                        await callerDispatcher.InvokeAsync(() => isInitialized = _browser.IsBrowserInitialized);
+
+                        if (Cef.IsInitialized && isInitialized)
+                        {
+                            waitForInitialization = false;
+                        }
+
+                        await Task.Delay(10);
+
+                    }
+
+                    _browser.Load(SkypeWebAppUrl);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
+
                 await _webElement.SetElementTextByName("loginfmt", user);
                 await _webElement.ClickButtonById("idSIButton9");
 

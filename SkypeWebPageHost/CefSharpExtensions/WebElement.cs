@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Threading.Tasks;
 using CefSharp;
+using CefSharp.Internals;
 using CefSharp.Wpf;
 
 namespace SkypeWebPageHost.CefSharpExtensions
 {
     public class WebElement
     {
-        private readonly ChromiumWebBrowser _browser;
+        private readonly IRenderWebBrowser _browser;
         private bool _pageReady;
 
-        public WebElement(ChromiumWebBrowser browser)
+        public WebElement(IRenderWebBrowser browser)
         {
             _browser = browser;
 
