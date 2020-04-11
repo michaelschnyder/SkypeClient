@@ -86,17 +86,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="CallSignalingInterceptor.cs" />
-    <Compile Include="Container\IRequestInterceptor.cs" />
-    <Compile Include="Container\RequestHandlerInterceptionFactory.cs" />
-    <Compile Include="Container\DelegatingResourceRequestHandler.cs" />
-    <Compile Include="PollingMessageInterceptor.cs" />
+    <Compile Include="Container\CallSignalingInterceptor.cs" />
+    <Compile Include="CefSharp\Interception\DelegatingResourceRequestHandler.cs" />
+    <Compile Include="CefSharp\Interception\IRequestInterceptor.cs" />
+    <Compile Include="CefSharp\Interception\RequestHandlerInterceptionFactory.cs" />
+    <Compile Include="CefSharp\WebElement.cs" />
+    <Compile Include="Container\PollingMessageInterceptor.cs" />
     <Compile Include="Protocol\EmbeddedJsonConverter.cs" />
     <Compile Include="Protocol\Events\Resource\Content\ParticipantList.cs" />
     <Compile Include="Protocol\Events\SyncMessage.cs" />
     <Compile Include="Protocol\Signaling\CallNotification\AdditionalActionResponse.cs" />
     <Compile Include="SkypeApp.cs" />
-    <Compile Include="Container\WebElement.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -149,6 +149,7 @@
       <Name>Skype.Client</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

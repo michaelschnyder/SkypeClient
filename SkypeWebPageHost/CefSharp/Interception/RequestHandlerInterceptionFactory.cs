@@ -3,7 +3,7 @@ using System.Linq;
 using CefSharp;
 using CefSharp.Handler;
 
-namespace SkypeWebPageHost.Container
+namespace SkypeWebPageHost.CefSharp.Interception
 {
     public class RequestHandlerInterceptionFactory : RequestHandler
     {
