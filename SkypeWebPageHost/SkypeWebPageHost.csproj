@@ -86,8 +86,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CallSignalingInterceptor.cs" />
+    <Compile Include="Container\IRequestInterceptor.cs" />
     <Compile Include="Container\RequestHandlerInterceptionFactory.cs" />
-    <Compile Include="Container\CustomResourceRequestHandler.cs" />
+    <Compile Include="Container\DelegatingResourceRequestHandler.cs" />
+    <Compile Include="PollingMessageInterceptor.cs" />
     <Compile Include="Protocol\EmbeddedJsonConverter.cs" />
     <Compile Include="Protocol\Events\Resource\Content\ParticipantList.cs" />
     <Compile Include="Protocol\Events\SyncMessage.cs" />
@@ -140,7 +143,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Skype.Client\Skype.Client.csproj">
+      <Project>{2fc4564c-fde5-409c-a36f-bd5783eec195}</Project>
+      <Name>Skype.Client</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

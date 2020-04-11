@@ -7,22 +7,22 @@ namespace SkypeWebPageHost.Container
 {
     public class WebElement
     {
-        private ChromiumWebBrowser _browser;
-        private bool pageReady;
+        private readonly ChromiumWebBrowser _browser;
+        private bool _pageReady;
 
         public WebElement(ChromiumWebBrowser browser)
         {
             _browser = browser;
 
             _browser.FrameLoadEnd += OnBrowserOnFrameLoadEnd;
-            _browser.FrameLoadStart += (sender, e) => pageReady = false;
+            _browser.FrameLoadStart += (sender, e) => _pageReady = false;
         }
 
         private void OnBrowserOnFrameLoadEnd(object sender, FrameLoadEndEventArgs e)
         {
             if (e.Frame.IsMain)
             {
-                pageReady = true;
+                _pageReady = true;
             }
         }
 
@@ -84,10 +84,9 @@ namespace SkypeWebPageHost.Container
 
                          $" }})()";
 
-            var isFound = false;
-            while (!isFound)
+            while (true)
             {
-                if (!pageReady)
+                if (!_pageReady)
                 {
                     await Task.Delay(10);
                     continue;

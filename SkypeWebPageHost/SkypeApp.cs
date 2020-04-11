@@ -19,7 +19,12 @@ namespace SkypeWebPageHost
             _webElement = new WebElement(browser);
             _browser.FrameLoadEnd += OnBrowserOnFrameLoadEnd;
 
-            _browser.RequestHandler = new RequestHandlerInterceptionFactory();
+            var requestHandlerInterceptionFactory = new RequestHandlerInterceptionFactory();
+
+            requestHandlerInterceptionFactory.Register("cc.skype.com/cc/v1", new CallSignalingInterceptor());
+            requestHandlerInterceptionFactory.Register("gateway.messenger.live.com/v1", new PollingMessageInterceptor());
+
+            _browser.RequestHandler = requestHandlerInterceptionFactory;
         }
 
         private void OnBrowserOnFrameLoadEnd(object sender, FrameLoadEndEventArgs e)
