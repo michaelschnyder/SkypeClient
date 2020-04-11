@@ -5,7 +5,7 @@ using System.Text;
 using System.Xml.Serialization;
 using CefSharp;
 using Newtonsoft.Json;
-using SkypeWebPageHost.CefSharp.Interception;
+using SkypeWebPageHost.CefSharpExtensions.Interception;
 using SkypeWebPageHost.Protocol.Events;
 using SkypeWebPageHost.Protocol.Events.Resource.Content;
 

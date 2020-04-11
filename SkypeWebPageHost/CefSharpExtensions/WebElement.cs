@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using CefSharp;
 using CefSharp.Wpf;
 
-namespace SkypeWebPageHost.CefSharp
+namespace SkypeWebPageHost.CefSharpExtensions
 {
     public class WebElement
     {

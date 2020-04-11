@@ -3,7 +3,7 @@ using System.IO;
 using CefSharp;
 using CefSharp.Handler;
 
-namespace SkypeWebPageHost.CefSharp.Interception
+namespace SkypeWebPageHost.CefSharpExtensions.Interception
 {
     public class DelegatingResourceRequestHandler : ResourceRequestHandler
     {

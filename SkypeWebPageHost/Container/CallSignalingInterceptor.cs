@@ -3,7 +3,7 @@ using System.IO;
 using System.Text;
 using CefSharp;
 using Newtonsoft.Json;
-using SkypeWebPageHost.CefSharp.Interception;
+using SkypeWebPageHost.CefSharpExtensions.Interception;
 using SkypeWebPageHost.Protocol.Signaling.CallNotification;
 
 namespace SkypeWebPageHost.Container

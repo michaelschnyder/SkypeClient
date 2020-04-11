@@ -87,10 +87,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Container\CallSignalingInterceptor.cs" />
-    <Compile Include="CefSharp\Interception\DelegatingResourceRequestHandler.cs" />
-    <Compile Include="CefSharp\Interception\IRequestInterceptor.cs" />
-    <Compile Include="CefSharp\Interception\RequestHandlerInterceptionFactory.cs" />
-    <Compile Include="CefSharp\WebElement.cs" />
+    <Compile Include="CefSharpExtensions\Interception\DelegatingResourceRequestHandler.cs" />
+    <Compile Include="CefSharpExtensions\Interception\IRequestInterceptor.cs" />
+    <Compile Include="CefSharpExtensions\Interception\RequestHandlerInterceptionFactory.cs" />
+    <Compile Include="CefSharpExtensions\WebElement.cs" />
     <Compile Include="Container\PollingMessageInterceptor.cs" />
     <Compile Include="Protocol\EmbeddedJsonConverter.cs" />
     <Compile Include="Protocol\Events\Resource\Content\ParticipantList.cs" />
@@ -142,12 +142,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Skype.Client\Skype.Client.csproj">
-      <Project>{2fc4564c-fde5-409c-a36f-bd5783eec195}</Project>
-      <Name>Skype.Client</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

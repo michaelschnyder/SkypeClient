@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using CefSharp;
 
-namespace SkypeWebPageHost.CefSharp.Interception
+namespace SkypeWebPageHost.CefSharpExtensions.Interception
 {
     public interface IRequestInterceptor
     {

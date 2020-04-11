@@ -2,8 +2,8 @@
 using System.Threading.Tasks;
 using CefSharp;
 using CefSharp.Wpf;
-using SkypeWebPageHost.CefSharp;
-using SkypeWebPageHost.CefSharp.Interception;
+using SkypeWebPageHost.CefSharpExtensions;
+using SkypeWebPageHost.CefSharpExtensions.Interception;
 using SkypeWebPageHost.Container;
 
 namespace SkypeWebPageHost
