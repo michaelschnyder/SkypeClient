@@ -14,12 +14,12 @@ namespace SkypeWebPageHost
         private static string SkypeWebAppUrl = "https://web.skype.com/";
 
         private readonly IRenderWebBrowser _browser;
-        private readonly WebElement _webElement;
+        private readonly PageInteraction _pageInteraction;
 
         public SkypeApp(IRenderWebBrowser browser)
         {
             _browser = browser;
-            _webElement = new WebElement(browser);
+            _pageInteraction = new PageInteraction(browser);
             _browser.FrameLoadEnd += OnBrowserOnFrameLoadEnd;
 
             var requestHandlerInterceptionFactory = new RequestHandlerInterceptionFactory();
@@ -71,11 +71,11 @@ namespace SkypeWebPageHost
                     throw;
                 }
 
-                await _webElement.SetElementTextByName("loginfmt", user);
-                await _webElement.ClickButtonById("idSIButton9");
+                await _pageInteraction.SetElementTextByName("loginfmt", user);
+                await _pageInteraction.ClickButtonById("idSIButton9");
 
-                await _webElement.SetElementTextByName("passwd", password);
-                await _webElement.ClickButtonById("idSIButton9");
+                await _pageInteraction.SetElementTextByName("passwd", password);
+                await _pageInteraction.ClickButtonById("idSIButton9");
             });
         }
     }
