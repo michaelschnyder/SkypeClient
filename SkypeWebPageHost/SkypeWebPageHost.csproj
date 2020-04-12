@@ -86,13 +86,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Container\CallSignalingInterceptor.cs" />
-    <Compile Include="Container\PollingMessageInterceptor.cs" />
+    <Compile Include="ChannelForwardInterceptor.cs" />
+    <Compile Include="MessageChannel.cs" />
     <Compile Include="Protocol\EmbeddedJsonConverter.cs" />
     <Compile Include="Protocol\Events\Resource\Content\ParticipantList.cs" />
     <Compile Include="Protocol\Events\SyncMessage.cs" />
     <Compile Include="Protocol\Signaling\CallNotification\AdditionalActionResponse.cs" />
-    <Compile Include="SkypeApp.cs" />
+    <Compile Include="PublishMessageEventArgs.cs" />
+    <Compile Include="SkypeClient.cs" />
+    <Compile Include="SkypeWebApp.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

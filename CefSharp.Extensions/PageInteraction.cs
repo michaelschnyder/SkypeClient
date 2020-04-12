@@ -4,12 +4,12 @@ using CefSharp.Internals;
 
 namespace CefSharp.Extensions
 {
-    public class WebElement
+    public class PageInteraction
     {
         private readonly IRenderWebBrowser _browser;
         private bool _pageReady;
 
-        public WebElement(IRenderWebBrowser browser)
+        public PageInteraction(IRenderWebBrowser browser)
         {
             _browser = browser;
 

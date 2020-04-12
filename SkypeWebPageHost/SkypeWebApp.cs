@@ -5,18 +5,20 @@ using CefSharp;
 using CefSharp.Extensions;
 using CefSharp.Extensions.Interception;
 using CefSharp.Internals;
-using SkypeWebPageHost.Container;
 
 namespace SkypeWebPageHost
 {
-    public class SkypeApp
+    public class SkypeWebApp
     {
         private static string SkypeWebAppUrl = "https://web.skype.com/";
 
         private readonly IRenderWebBrowser _browser;
         private readonly PageInteraction _pageInteraction;
+        
+        private MessageChannel _callSignalingChannel = new MessageChannel();
+        private MessageChannel _eventChannel = new MessageChannel();
 
-        public SkypeApp(IRenderWebBrowser browser)
+        public SkypeWebApp(IRenderWebBrowser browser)
         {
             _browser = browser;
             _pageInteraction = new PageInteraction(browser);
@@ -24,10 +26,12 @@ namespace SkypeWebPageHost
 
             var requestHandlerInterceptionFactory = new RequestHandlerInterceptionFactory();
 
-            requestHandlerInterceptionFactory.Register("cc.skype.com/cc/v1", new CallSignalingInterceptor());
-            requestHandlerInterceptionFactory.Register("gateway.messenger.live.com/v1", new PollingMessageInterceptor());
+            requestHandlerInterceptionFactory.Register("cc.skype.com/cc/v1", new ChannelForwardInterceptor(this._callSignalingChannel));
+            requestHandlerInterceptionFactory.Register("gateway.messenger.live.com/v1", new ChannelForwardInterceptor(this._eventChannel));
 
             _browser.RequestHandler = requestHandlerInterceptionFactory;
+
+            var skypeClient = new SkypeClient(this._callSignalingChannel, this._eventChannel);
         }
 
         private void OnBrowserOnFrameLoadEnd(object sender, FrameLoadEndEventArgs e)

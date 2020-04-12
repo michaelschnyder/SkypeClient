@@ -3,22 +3,24 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
-using CefSharp;
-using CefSharp.Extensions.Interception;
 using Newtonsoft.Json;
 using SkypeWebPageHost.Protocol.Events;
 using SkypeWebPageHost.Protocol.Events.Resource.Content;
+using SkypeWebPageHost.Protocol.Signaling.CallNotification;
 
-namespace SkypeWebPageHost.Container
+namespace SkypeWebPageHost
 {
-    public class PollingMessageInterceptor : IRequestInterceptor
+    public class SkypeClient
     {
-        public void Execute(IResponse response, MemoryStream stream)
+        public SkypeClient(MessageChannel callSignalingChannel, MessageChannel eventChannel)
         {
-            if (response.Charset != "utf-8" || stream.Length == 0) return;
+            callSignalingChannel.MessagePublished += CallSignalingChannelOnMessagePublished;
+            eventChannel.MessagePublished += EventChannelOnMessagePublished;
+        }
 
-            var str = Encoding.UTF8.GetString(stream.ToArray());
-            var messageFrame = JsonConvert.DeserializeObject<Frame>(str);
+        private void EventChannelOnMessagePublished(object sender, PublishMessageEventArgs e)
+        {
+            var messageFrame = JsonConvert.DeserializeObject<Frame>(e.Message);
 
             var callLog = messageFrame.EventMessages?.Select(m => (m?.Resource?.Properties?.CallLog)).First();
 
@@ -65,6 +67,19 @@ namespace SkypeWebPageHost.Container
                     Console.WriteLine($"Call with {messageFrame.EventMessages.FirstOrDefault()?.Resource.ImDisplayName} ended. Call-Id {partsList.CallId}");
                 }
             }
+        }
+
+        private void CallSignalingChannelOnMessagePublished(object sender, PublishMessageEventArgs e)
+        {
+            // Video or Audio Call Notification
+            var notification = JsonConvert.DeserializeObject<CallNotificationFrame>(e.Message);
+
+            if (notification?.Participants != null)
+            {
+                Console.WriteLine($"Incoming from {notification.Participants.From.DisplayName}. Call-Id: {notification.DebugContent.CallId}");
+            }
+
+
         }
     }
 }
