@@ -54,7 +54,14 @@ namespace Skype.Client.CefSharp
 
                     while (waitForInitialization)
                     {
-                        ctx.Post(state => isInitialized = _browser.IsBrowserInitialized, null);
+                        if (ctx != null)
+                        {
+                            ctx.Post(state => isInitialized = _browser.IsBrowserInitialized, null);
+                        }
+                        else
+                        {
+                            isInitialized = _browser.IsBrowserInitialized;
+                        }
 
                         if (Cef.IsInitialized && isInitialized)
                         {
