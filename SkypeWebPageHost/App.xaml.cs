@@ -15,8 +15,8 @@ namespace SkypeWebPageHost
             {
                 MainWindow wnd = new MainWindow();
 
-                var skypeApp = new SkypeWebApp(wnd.Browser);
-                skypeApp.Login(e.Args[0], e.Args[1]);
+                var client = new SkypeCefClient(wnd.Browser);
+                client.Login(e.Args[0], e.Args[1]);
 
 
                 wnd.Show();

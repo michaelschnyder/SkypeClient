@@ -1,8 +1,8 @@
 ﻿using System;
 using Newtonsoft.Json;
-using SkypeWebPageHost.Protocol.Events.Resource.Properties;
+using Skype.Client.Protocol.Events.Resource.Properties;
 
-namespace SkypeWebPageHost.Protocol.Events.Resource
+namespace Skype.Client.Protocol.Events.Resource
 {
     public class Resource
     {

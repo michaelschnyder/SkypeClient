@@ -4,16 +4,25 @@ using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
-using SkypeWebPageHost.Protocol.Events;
-using SkypeWebPageHost.Protocol.Events.Resource.Content;
-using SkypeWebPageHost.Protocol.Signaling.CallNotification;
+using Skype.Client.Channel;
+using Skype.Client.Protocol.Events;
+using Skype.Client.Protocol.Events.Resource.Content;
+using Skype.Client.Protocol.Signaling.CallNotification;
 
-namespace SkypeWebPageHost
+namespace Skype.Client
 {
     public class SkypeClient
     {
+        public MessageChannel CallSignalingChannel { get; }
+        public MessageChannel EventChannel { get; }
+
+        public SkypeClient() : this(new MessageChannel(), new MessageChannel()) { }
+
         public SkypeClient(MessageChannel callSignalingChannel, MessageChannel eventChannel)
         {
+            CallSignalingChannel = callSignalingChannel;
+            EventChannel = eventChannel;
+
             callSignalingChannel.MessagePublished += CallSignalingChannelOnMessagePublished;
             eventChannel.MessagePublished += EventChannelOnMessagePublished;
         }

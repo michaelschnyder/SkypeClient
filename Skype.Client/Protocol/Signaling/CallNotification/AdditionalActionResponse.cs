@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace SkypeWebPageHost.Protocol.Signaling.CallNotification
+namespace Skype.Client.Protocol.Signaling.CallNotification
 {
     public class AdditionalActionResponse
     {

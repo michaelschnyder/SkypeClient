@@ -2,7 +2,7 @@
 using System.Text;
 using CefSharp;
 using CefSharp.Extensions.Interception;
-using SkypeWebPageHost;
+using Skype.Client.Channel;
 
 namespace Skype.Client.CefSharp
 {

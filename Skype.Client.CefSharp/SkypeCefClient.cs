@@ -5,21 +5,19 @@ using CefSharp;
 using CefSharp.Extensions;
 using CefSharp.Extensions.Interception;
 using CefSharp.Internals;
-using SkypeWebPageHost;
 
 namespace Skype.Client.CefSharp
 {
-    public class SkypeWebApp
+    public class SkypeCefClient : SkypeClient
     {
-        private static string SkypeWebAppUrl = "https://web.skype.com/";
+        private const string SkypeWebAppUrl = "https://web.skype.com/";
+        private const string CallSignalingUrl = "cc.skype.com/cc/v1";
+        private const string EventMessageUrl = "gateway.messenger.live.com/v1";
 
         private readonly IRenderWebBrowser _browser;
         private readonly PageInteraction _pageInteraction;
-        
-        private MessageChannel _callSignalingChannel = new MessageChannel();
-        private MessageChannel _eventChannel = new MessageChannel();
 
-        public SkypeWebApp(IRenderWebBrowser browser)
+        public SkypeCefClient(IRenderWebBrowser browser)
         {
             _browser = browser;
             _pageInteraction = new PageInteraction(browser);
@@ -27,12 +25,10 @@ namespace Skype.Client.CefSharp
 
             var requestHandlerInterceptionFactory = new RequestHandlerInterceptionFactory();
 
-            requestHandlerInterceptionFactory.Register("cc.skype.com/cc/v1", new ChannelForwardInterceptor(this._callSignalingChannel));
-            requestHandlerInterceptionFactory.Register("gateway.messenger.live.com/v1", new ChannelForwardInterceptor(this._eventChannel));
+            requestHandlerInterceptionFactory.Register(CallSignalingUrl, new ChannelForwardInterceptor(CallSignalingChannel));
+            requestHandlerInterceptionFactory.Register(EventMessageUrl, new ChannelForwardInterceptor(EventChannel));
 
             _browser.RequestHandler = requestHandlerInterceptionFactory;
-
-            var skypeClient = new SkypeClient(this._callSignalingChannel, this._eventChannel);
         }
 
         private void OnBrowserOnFrameLoadEnd(object sender, FrameLoadEndEventArgs e)

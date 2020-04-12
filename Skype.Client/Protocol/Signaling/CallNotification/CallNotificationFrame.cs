@@ -1,4 +1,4 @@
-﻿namespace SkypeWebPageHost.Protocol.Signaling.CallNotification
+﻿namespace Skype.Client.Protocol.Signaling.CallNotification
 {
 
     public class CallNotificationFrame

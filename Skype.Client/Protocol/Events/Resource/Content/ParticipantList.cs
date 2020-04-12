@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Xml.Serialization;
 
-namespace SkypeWebPageHost.Protocol.Events.Resource.Content
+namespace Skype.Client.Protocol.Events.Resource.Content
 {
     [Serializable()]
     [System.ComponentModel.DesignerCategory("code")]

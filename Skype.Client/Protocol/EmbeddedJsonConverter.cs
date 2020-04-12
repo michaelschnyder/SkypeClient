@@ -2,7 +2,7 @@
 using System.IO;
 using Newtonsoft.Json;
 
-namespace SkypeWebPageHost.Protocol
+namespace Skype.Client.Protocol
 {
     public class EmbeddedJsonConverter : JsonConverter
     {

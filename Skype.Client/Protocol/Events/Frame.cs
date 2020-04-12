@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace SkypeWebPageHost.Protocol.Events
+namespace Skype.Client.Protocol.Events
 {
     public class Frame
     {

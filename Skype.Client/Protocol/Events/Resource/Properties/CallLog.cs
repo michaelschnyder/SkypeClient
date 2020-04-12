@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SkypeWebPageHost.Protocol.Events.Resource.Properties
+namespace Skype.Client.Protocol.Events.Resource.Properties
 {
     public class CallLog
     {

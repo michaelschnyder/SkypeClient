@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SkypeWebPageHost.Protocol.Events
+namespace Skype.Client.Protocol.Events
 {
     public class Response
     {

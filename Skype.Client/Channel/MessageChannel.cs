@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SkypeWebPageHost
+namespace Skype.Client.Channel
 {
     public class MessageChannel
     {
