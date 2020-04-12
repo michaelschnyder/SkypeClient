@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkypeWebPageHost", "SkypeWe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CefSharp.Extensions", "CefSharp.Extensions\CefSharp.Extensions.csproj", "{94E4C56D-7334-4DDE-A781-74C92D8F6176}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skype.Client", "Skype.Client\Skype.Client.csproj", "{0BD94170-3405-40F1-BFB3-3710A3C9C906}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,14 @@ Global
 		{94E4C56D-7334-4DDE-A781-74C92D8F6176}.Release|Any CPU.Build.0 = Release|Any CPU
 		{94E4C56D-7334-4DDE-A781-74C92D8F6176}.Release|x64.ActiveCfg = Release|x64
 		{94E4C56D-7334-4DDE-A781-74C92D8F6176}.Release|x64.Build.0 = Release|x64
+		{0BD94170-3405-40F1-BFB3-3710A3C9C906}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BD94170-3405-40F1-BFB3-3710A3C9C906}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BD94170-3405-40F1-BFB3-3710A3C9C906}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0BD94170-3405-40F1-BFB3-3710A3C9C906}.Debug|x64.Build.0 = Debug|Any CPU
+		{0BD94170-3405-40F1-BFB3-3710A3C9C906}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BD94170-3405-40F1-BFB3-3710A3C9C906}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BD94170-3405-40F1-BFB3-3710A3C9C906}.Release|x64.ActiveCfg = Release|Any CPU
+		{0BD94170-3405-40F1-BFB3-3710A3C9C906}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

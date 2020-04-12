@@ -87,13 +87,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ChannelForwardInterceptor.cs" />
-    <Compile Include="MessageChannel.cs" />
-    <Compile Include="Protocol\EmbeddedJsonConverter.cs" />
-    <Compile Include="Protocol\Events\Resource\Content\ParticipantList.cs" />
-    <Compile Include="Protocol\Events\SyncMessage.cs" />
-    <Compile Include="Protocol\Signaling\CallNotification\AdditionalActionResponse.cs" />
-    <Compile Include="PublishMessageEventArgs.cs" />
-    <Compile Include="SkypeClient.cs" />
     <Compile Include="SkypeWebApp.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -103,12 +96,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Protocol\Events\Resource\Properties\CallLog.cs" />
-    <Compile Include="Protocol\Events\EventMessage.cs" />
-    <Compile Include="Protocol\Events\Frame.cs" />
-    <Compile Include="Protocol\Events\Resource\Resource.cs" />
-    <Compile Include="Protocol\Events\Response.cs" />
-    <Compile Include="Protocol\Signaling\CallNotification\CallNotificationFrame.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -145,6 +132,10 @@
     <ProjectReference Include="..\CefSharp.Extensions\CefSharp.Extensions.csproj">
       <Project>{94e4c56d-7334-4dde-a781-74c92d8f6176}</Project>
       <Name>CefSharp.Extensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Skype.Client\Skype.Client.csproj">
+      <Project>{0bd94170-3405-40f1-bfb3-3710a3c9c906}</Project>
+      <Name>Skype.Client</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
