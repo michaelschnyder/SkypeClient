@@ -22,7 +22,7 @@ namespace Skype.Client.CefSharp
             RenderWebBrowser = browser;
 
             _pageInteraction = new PageInteraction(browser);
-            RenderWebBrowser.FrameLoadEnd += OnBrowserOnFrameLoadEnd;
+            RenderWebBrowser.FrameLoadStart += RenderWebBrowserOnFrameLoadStart;
 
             var requestHandlerInterceptionFactory = new RequestHandlerInterceptionFactory();
 
@@ -32,9 +32,13 @@ namespace Skype.Client.CefSharp
             RenderWebBrowser.RequestHandler = requestHandlerInterceptionFactory;
         }
 
-        private void OnBrowserOnFrameLoadEnd(object sender, FrameLoadEndEventArgs e)
+        private void RenderWebBrowserOnFrameLoadStart(object sender, FrameLoadStartEventArgs e)
         {
-
+            if (Status == AppStatus.Authenticating && e.Frame.Url == SkypeWebAppUrl)
+            {
+                this.UpdateStatus(AppStatus.Authenticated);
+                this.UpdateStatus(AppStatus.Loading);
+            }
         }
 
         public void Login(string user, string password)
@@ -85,11 +89,6 @@ namespace Skype.Client.CefSharp
 
                 await _pageInteraction.SetElementTextByName("passwd", password);
                 await _pageInteraction.ClickButtonById("idSIButton9");
-
-                this.UpdateStatus(AppStatus.Authenticated);
-
-                this.UpdateStatus(AppStatus.Loading);
-
             });
         }
     }
