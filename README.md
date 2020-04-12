@@ -2,9 +2,8 @@
 Skype Notifier consist of a comple of libraries that eventually team up to send notifications about incoming Skype calls to other devices like an Arduino/ESP32/ESP8266.
 
 **Current Status** <br/>
-✔️ Login and recieve notifications on a console application <br/>
-✔️ Login and recieve notifications on a WPF application <br/>
-✔️ Code split for reusability <br/>
+✔️ Login and recieve notifications on a console or WPF application <br/>
+✔️ Code split for reusability with minimal dependencies <br/>
 
 **Pending** <br/>
 💡 Forward notifications to listener device <br/>
