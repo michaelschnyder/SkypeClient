@@ -16,40 +16,53 @@ namespace Skype.Client
         protected MessageChannel CallSignalingChannel { get; }
         protected MessageChannel EventChannel { get; }
 
-        public SkypeClient() : this(new MessageChannel(), new MessageChannel()) { }
+        public event EventHandler<CallEventArgs> IncomingCall;
+        public event EventHandler<CallEventArgs> CallStatusChanged;
 
-        public SkypeClient(MessageChannel callSignalingChannel, MessageChannel eventChannel)
+        public event EventHandler<MessageReceivedEventArgs> MessageReceived; 
+
+        public SkypeClient()
         {
-            CallSignalingChannel = callSignalingChannel;
-            EventChannel = eventChannel;
+            CallSignalingChannel = new MessageChannel();
+            EventChannel = new MessageChannel();
 
-            callSignalingChannel.MessagePublished += CallSignalingChannelOnMessagePublished;
-            eventChannel.MessagePublished += EventChannelOnMessagePublished;
+            CallSignalingChannel.MessagePublished += CallSignalingChannelOnMessagePublished;
+            EventChannel.MessagePublished += EventChannelOnMessagePublished;
         }
 
         private void EventChannelOnMessagePublished(object sender, PublishMessageEventArgs e)
         {
             var messageFrame = JsonConvert.DeserializeObject<Frame>(e.Message);
 
-            var callLog = messageFrame.EventMessages?.Select(m => (m?.Resource?.Properties?.CallLog)).First();
-
-            if (callLog != null)
+            if (messageFrame.EventMessages != null)
             {
-                if (callLog.CallState == "declined")
+                foreach (var eventMessage in messageFrame.EventMessages)
                 {
-                    Console.WriteLine($"Declined call from {callLog.OriginatorParticipant.DisplayName}. Call-Id: {callLog.CallId}"); return;
-                }
+                    var callLog = eventMessage.Resource?.Properties?.CallLog;
 
-                if (callLog.CallState == "missed")
-                {
-                    Console.WriteLine($"Missed call from {callLog.OriginatorParticipant.DisplayName}. Call-Id: {callLog.CallId}"); return;
+                    if (callLog != null && (callLog.CallState == "declined" || callLog.CallState == "missed"))
+                    {
+                        OnCallStatusChanged(new CallEventArgs
+                        {
+                            Type = callLog.CallState == "declined" ? CallAction.Declined : CallAction.Missed,
+                            CallerName = callLog.OriginatorParticipant.DisplayName,
+                            CallId = callLog.CallId
+                        });
+                    }
                 }
             }
+
 
             var messageContent = messageFrame.EventMessages?.Where(m => m.Resource?.MessageType == "RichText").Select(m => m.Resource.Content).FirstOrDefault();
 
             if (messageContent != null)
             {
+                OnMessageReceived(new MessageReceivedEventArgs
+                {
+                    SenderName = messageFrame.EventMessages?.FirstOrDefault()?.Resource.ImDisplayName,
+                    MessageHtml = messageFrame.EventMessages?.FirstOrDefault()?.Resource.Content
+                });
+
                 Console.WriteLine($"Message from {messageFrame.EventMessages?.FirstOrDefault()?.Resource.ImDisplayName}: {messageFrame.EventMessages?.FirstOrDefault()?.Resource.Content}");
             }
 
@@ -69,11 +82,22 @@ namespace Skype.Client
 
                 if (partsList.Type == "started")
                 {
-                    Console.WriteLine($"Call with {messageFrame.EventMessages?.FirstOrDefault()?.Resource.ImDisplayName} started. Call-Id {partsList.CallId}");
+                    OnCallStatusChanged(new CallEventArgs
+                    {
+                        Type = CallAction.Accepted,
+                        CallerName = messageFrame.EventMessages?.FirstOrDefault()?.Resource.ImDisplayName,
+                        CallId = partsList.CallId
+                    });
                 }
+
                 if (partsList.Type == "ended")
                 {
-                    Console.WriteLine($"Call with {messageFrame.EventMessages.FirstOrDefault()?.Resource.ImDisplayName} ended. Call-Id {partsList.CallId}");
+                    OnCallStatusChanged(new CallEventArgs
+                    {
+                        Type = CallAction.Ended,
+                        CallerName = messageFrame.EventMessages?.FirstOrDefault()?.Resource.ImDisplayName,
+                        CallId = partsList.CallId
+                    });
                 }
             }
         }
@@ -85,10 +109,28 @@ namespace Skype.Client
 
             if (notification?.Participants != null)
             {
-                Console.WriteLine($"Incoming from {notification.Participants.From.DisplayName}. Call-Id: {notification.DebugContent.CallId}");
+                OnIncomingCall(new CallEventArgs
+                {
+                    Type = CallAction.Incoming,
+                    CallerName = notification.Participants.From.DisplayName, 
+                    CallId = notification.DebugContent.CallId
+                });
             }
+        }
 
+        protected virtual void OnIncomingCall(CallEventArgs e)
+        {
+            IncomingCall?.Invoke(this, e);
+        }
 
+        protected virtual void OnCallStatusChanged(CallEventArgs e)
+        {
+            CallStatusChanged?.Invoke(this, e);
+        }
+
+        protected virtual void OnMessageReceived(MessageReceivedEventArgs e)
+        {
+            MessageReceived?.Invoke(this, e);
         }
     }
 }

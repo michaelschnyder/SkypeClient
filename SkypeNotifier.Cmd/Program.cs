@@ -11,6 +11,10 @@ namespace SkypeNotifier.Cmd
             {
                 System.Console.WriteLine("Starting SkypeClient");
                 var app = new SkypeCefOffScreenClient();
+
+                app.IncomingCall += (sender, eventArgs) => Console.WriteLine(eventArgs);
+                app.CallStatusChanged += (sender, eventArgs) => Console.WriteLine(eventArgs);
+
                 app.Login(args[0], args[1]);
 
                 Console.ReadKey();
