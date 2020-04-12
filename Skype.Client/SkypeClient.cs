@@ -199,6 +199,7 @@ namespace Skype.Client
         Connected,
         Initializing,
         Authenticating,
-        Authenticated
+        Authenticated,
+        Loading
     }
 }

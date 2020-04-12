@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "SkypeNotifier.Cmd": {
-      "commandName": "Project",
-      "commandLineArgs": "michael.schnyder@gmail.com Habakuck12"
-    }
-  }
-}

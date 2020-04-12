@@ -1,7 +1,7 @@
 ﻿using System;
 using Skype.Client.CefSharp.OffScreen;
 
-namespace SkypeNotifier.Cmd
+namespace Skype.Client.Demo
 {
     class Program
     {
@@ -9,13 +9,15 @@ namespace SkypeNotifier.Cmd
         {
             if (args.Length == 2)
             {
-                System.Console.WriteLine("Starting SkypeClient");
+                Console.WriteLine("Creating new instance of client");
                 var app = new SkypeCefOffScreenClient();
 
+                app.StatusChanged += OnAppOnStatusChanged;
                 app.IncomingCall += (sender, eventArgs) => Console.WriteLine(eventArgs);
                 app.CallStatusChanged += (sender, eventArgs) => Console.WriteLine(eventArgs);
                 app.MessageReceived += (sender, eventArgs) => Console.WriteLine(eventArgs);
-                app.StatusChanged += (sender, eventArgs) => Console.WriteLine($"Client status changed to {eventArgs.New}");
+
+                Console.WriteLine("Starting authentication. This might take a few seconds.");
 
                 app.Login(args[0], args[1]);
 
@@ -24,6 +26,18 @@ namespace SkypeNotifier.Cmd
             else
             {
                 Console.WriteLine("Parameters mismatch");
+            }
+        }
+
+        private static void OnAppOnStatusChanged(object sender, StatusChangedEventArgs eventArgs)
+        {
+            if (eventArgs.New != AppStatus.Connected)
+            {
+                Console.WriteLine($"Client status: {eventArgs.New}");
+            }
+            else
+            {
+                Console.WriteLine("Ready! :). You will see incoming messages and calls on this command line shell. Press any key to exit.");
             }
         }
     }

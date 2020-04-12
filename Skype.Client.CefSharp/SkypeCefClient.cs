@@ -88,6 +88,8 @@ namespace Skype.Client.CefSharp
 
                 this.UpdateStatus(AppStatus.Authenticated);
 
+                this.UpdateStatus(AppStatus.Loading);
+
             });
         }
     }

@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skype.Client.CefSharp.Wpf",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skype.Client.CefSharp.OffScreen", "Skype.Client.CefSharp.OffScreen\Skype.Client.CefSharp.OffScreen.csproj", "{EE1829D8-23CA-410D-8B9F-370107528535}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkypeNotifier.Cmd", "SkypeNotifier.Cmd\SkypeNotifier.Cmd.csproj", "{FBC90A8F-0A3D-4D0F-B86A-B2687DA3B545}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Skype.Client.Demo", "Skype.Client.Demo\Skype.Client.Demo.csproj", "{8FA7339C-C0C6-4B47-845C-C42D9329B4A4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,14 +63,14 @@ Global
 		{EE1829D8-23CA-410D-8B9F-370107528535}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EE1829D8-23CA-410D-8B9F-370107528535}.Release|x64.ActiveCfg = Release|x64
 		{EE1829D8-23CA-410D-8B9F-370107528535}.Release|x64.Build.0 = Release|x64
-		{FBC90A8F-0A3D-4D0F-B86A-B2687DA3B545}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FBC90A8F-0A3D-4D0F-B86A-B2687DA3B545}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FBC90A8F-0A3D-4D0F-B86A-B2687DA3B545}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{FBC90A8F-0A3D-4D0F-B86A-B2687DA3B545}.Debug|x64.Build.0 = Debug|Any CPU
-		{FBC90A8F-0A3D-4D0F-B86A-B2687DA3B545}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FBC90A8F-0A3D-4D0F-B86A-B2687DA3B545}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FBC90A8F-0A3D-4D0F-B86A-B2687DA3B545}.Release|x64.ActiveCfg = Release|Any CPU
-		{FBC90A8F-0A3D-4D0F-B86A-B2687DA3B545}.Release|x64.Build.0 = Release|Any CPU
+		{8FA7339C-C0C6-4B47-845C-C42D9329B4A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FA7339C-C0C6-4B47-845C-C42D9329B4A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FA7339C-C0C6-4B47-845C-C42D9329B4A4}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8FA7339C-C0C6-4B47-845C-C42D9329B4A4}.Debug|x64.Build.0 = Debug|Any CPU
+		{8FA7339C-C0C6-4B47-845C-C42D9329B4A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FA7339C-C0C6-4B47-845C-C42D9329B4A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FA7339C-C0C6-4B47-845C-C42D9329B4A4}.Release|x64.ActiveCfg = Release|Any CPU
+		{8FA7339C-C0C6-4B47-845C-C42D9329B4A4}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

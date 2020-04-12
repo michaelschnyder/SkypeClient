@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <StartupObject>SkypeNotifier.Cmd.Program</StartupObject>
+    <StartupObject>Skype.Client.Demo.Program</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>

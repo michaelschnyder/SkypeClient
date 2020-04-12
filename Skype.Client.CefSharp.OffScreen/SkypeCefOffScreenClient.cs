@@ -9,7 +9,7 @@ namespace Skype.Client.CefSharp.OffScreen
         static SkypeCefOffScreenClient()
         {
             //Perform dependency check to make sure all relevant resources are in our output directory.
-            Cef.Initialize(new CefSettings(), performDependencyCheck: true, browserProcessHandler: null);
+            Cef.Initialize(new CefSettings() { LogSeverity = LogSeverity.Error }, performDependencyCheck: true, browserProcessHandler: null);
         }
 
         public SkypeCefOffScreenClient() : base(new ChromiumWebBrowser())
