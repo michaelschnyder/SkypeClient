@@ -20,6 +20,7 @@ namespace Skype.Client.CefSharp
         public SkypeCefClient(IRenderWebBrowser browser)
         {
             RenderWebBrowser = browser;
+
             _pageInteraction = new PageInteraction(browser);
             RenderWebBrowser.FrameLoadEnd += OnBrowserOnFrameLoadEnd;
 
@@ -33,12 +34,7 @@ namespace Skype.Client.CefSharp
 
         private void OnBrowserOnFrameLoadEnd(object sender, FrameLoadEndEventArgs e)
         {
-            if (e.Frame.IsMain)
-            {
-                Console.WriteLine($"Page load completed: {e.Url}");
 
-                if (e.Url.Equals(SkypeWebAppUrl)) Console.WriteLine("Application Loaded");
-            }
         }
 
         public void Login(string user, string password)
@@ -49,6 +45,8 @@ namespace Skype.Client.CefSharp
             {
                 try
                 {
+                    this.UpdateStatus(AppStatus.Initializing);
+
                     bool waitForInitialization = true;
                     bool isInitialized = false;
 
@@ -72,6 +70,8 @@ namespace Skype.Client.CefSharp
 
                     }
 
+
+                    this.UpdateStatus(AppStatus.Authenticating);
                     RenderWebBrowser.Load(SkypeWebAppUrl);
                 }
                 catch (Exception e)
@@ -85,6 +85,9 @@ namespace Skype.Client.CefSharp
 
                 await _pageInteraction.SetElementTextByName("passwd", password);
                 await _pageInteraction.ClickButtonById("idSIButton9");
+
+                this.UpdateStatus(AppStatus.Authenticated);
+
             });
         }
     }

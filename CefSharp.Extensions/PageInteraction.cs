@@ -35,9 +35,9 @@ namespace CefSharp.Extensions
                 $"  return document.getElementById('{id}').click();" +
                 "})()");
 
-            if (response.Success)
+            if (!response.Success)
             {
-                Console.WriteLine("button clicked.");
+                Console.WriteLine($"Button Click with id '{id}' failed. Message: {response.Message}");
             }
 
         }
@@ -53,9 +53,9 @@ namespace CefSharp.Extensions
                 $"  return document.getElementsByName('{name}')[0].value == '{value}';" +
                 "})()");
 
-            if (response.Success && (bool)response.Result)
+            if (!(response.Success && (bool)response.Result))
             {
-                Console.WriteLine("text set.");
+                Console.WriteLine($"Unable to set text on element with name '{name}'. Message: {response.Message}");
             }
         }
 
@@ -93,13 +93,15 @@ namespace CefSharp.Extensions
 
                 var response = await _browser.GetMainFrame().EvaluateScriptAsync(script);
 
-                if (response.Success && (bool)response.Result == true)
+                if (response.Success && (bool)response.Result)
                 {
-                    Console.WriteLine("Element found.");
                     return;
                 }
 
-                Console.WriteLine($"Missing element. Execution Status: {response.Success}, Result: {response.Result}, Message: {response.Result}");
+                if (!response.Success)
+                {
+                    Console.WriteLine($"Execution of function to resolved element failed. Reason: {response.Message}");
+                }
             }
         }
     }

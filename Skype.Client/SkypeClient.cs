@@ -19,7 +19,11 @@ namespace Skype.Client
         public event EventHandler<CallEventArgs> CallStatusChanged;
 
         public event EventHandler<MessageReceivedEventArgs> MessageReceived; 
-        public event EventHandler<EventMessageEventArgs> UnhandledEventMessage; 
+        public event EventHandler<EventMessageEventArgs> UnhandledEventMessage;
+
+        public event EventHandler<StatusChangedEventArgs> StatusChanged;
+
+        public AppStatus Status { get; private set; }
 
         public SkypeClient()
         {
@@ -48,6 +52,11 @@ namespace Skype.Client
 
         private void EventChannelOnMessagePublished(object sender, PublishMessageEventArgs e)
         {
+            if (this.Status != AppStatus.Connected)
+            {
+                this.UpdateStatus(AppStatus.Connected);
+            }
+            
             var messageFrame = JsonConvert.DeserializeObject<Frame>(e.Message);
             if (messageFrame.EventMessages == null) return;
 
@@ -61,6 +70,19 @@ namespace Skype.Client
 
                 OnUnhandledEventMessage(new EventMessageEventArgs {EventMessage = eventMessage});
             }
+        }
+
+        protected void UpdateStatus(AppStatus appStatus)
+        {
+            if (this.Status == appStatus)
+            {
+                return;
+            }
+            
+            var oldStatus = appStatus;
+            this.Status = appStatus;
+
+            OnStatusChanged(new StatusChangedEventArgs {Old = oldStatus, New = appStatus } );
         }
 
         private bool HandleCallUpdates(EventMessage eventMessage)
@@ -157,5 +179,26 @@ namespace Skype.Client
         {
             UnhandledEventMessage?.Invoke(this, e);
         }
+
+        protected virtual void OnStatusChanged(StatusChangedEventArgs e)
+        {
+            StatusChanged?.Invoke(this, e);
+        }
+    }
+
+    public class StatusChangedEventArgs
+    {
+        public AppStatus Old { get; set; }
+
+        public AppStatus New { get; set; }
+    }
+
+    public enum AppStatus
+    {
+        None,
+        Connected,
+        Initializing,
+        Authenticating,
+        Authenticated
     }
 }

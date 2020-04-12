@@ -15,6 +15,7 @@ namespace SkypeNotifier.Cmd
                 app.IncomingCall += (sender, eventArgs) => Console.WriteLine(eventArgs);
                 app.CallStatusChanged += (sender, eventArgs) => Console.WriteLine(eventArgs);
                 app.MessageReceived += (sender, eventArgs) => Console.WriteLine(eventArgs);
+                app.StatusChanged += (sender, eventArgs) => Console.WriteLine($"Client status changed to {eventArgs.New}");
 
                 app.Login(args[0], args[1]);
 
