@@ -86,8 +86,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ChannelForwardInterceptor.cs" />
-    <Compile Include="SkypeWebApp.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -132,6 +130,10 @@
     <ProjectReference Include="..\CefSharp.Extensions\CefSharp.Extensions.csproj">
       <Project>{94e4c56d-7334-4dde-a781-74c92d8f6176}</Project>
       <Name>CefSharp.Extensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Skype.Client.CefSharp\Skype.Client.CefSharp.csproj">
+      <Project>{6fc3bc7b-5c35-42e3-8f80-a5e7060b87e4}</Project>
+      <Name>Skype.Client.CefSharp</Name>
     </ProjectReference>
     <ProjectReference Include="..\Skype.Client\Skype.Client.csproj">
       <Project>{0bd94170-3405-40f1-bfb3-3710a3c9c906}</Project>

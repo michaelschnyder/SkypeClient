@@ -2,8 +2,9 @@
 using System.Text;
 using CefSharp;
 using CefSharp.Extensions.Interception;
+using SkypeWebPageHost;
 
-namespace SkypeWebPageHost
+namespace Skype.Client.CefSharp
 {
     public class ChannelForwardInterceptor : IRequestInterceptor
     {

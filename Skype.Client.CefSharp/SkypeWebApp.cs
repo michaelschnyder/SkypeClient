@@ -5,8 +5,9 @@ using CefSharp;
 using CefSharp.Extensions;
 using CefSharp.Extensions.Interception;
 using CefSharp.Internals;
+using SkypeWebPageHost;
 
-namespace SkypeWebPageHost
+namespace Skype.Client.CefSharp
 {
     public class SkypeWebApp
     {
