@@ -14,21 +14,21 @@ namespace Skype.Client.CefSharp
         private const string CallSignalingUrl = "cc.skype.com/cc/v1";
         private const string EventMessageUrl = "gateway.messenger.live.com/v1";
 
-        private readonly IRenderWebBrowser _browser;
         private readonly PageInteraction _pageInteraction;
+        protected IRenderWebBrowser RenderWebBrowser { get; }
 
         public SkypeCefClient(IRenderWebBrowser browser)
         {
-            _browser = browser;
+            RenderWebBrowser = browser;
             _pageInteraction = new PageInteraction(browser);
-            _browser.FrameLoadEnd += OnBrowserOnFrameLoadEnd;
+            RenderWebBrowser.FrameLoadEnd += OnBrowserOnFrameLoadEnd;
 
             var requestHandlerInterceptionFactory = new RequestHandlerInterceptionFactory();
 
             requestHandlerInterceptionFactory.Register(CallSignalingUrl, new ChannelForwardInterceptor(CallSignalingChannel));
             requestHandlerInterceptionFactory.Register(EventMessageUrl, new ChannelForwardInterceptor(EventChannel));
 
-            _browser.RequestHandler = requestHandlerInterceptionFactory;
+            RenderWebBrowser.RequestHandler = requestHandlerInterceptionFactory;
         }
 
         private void OnBrowserOnFrameLoadEnd(object sender, FrameLoadEndEventArgs e)
@@ -56,11 +56,11 @@ namespace Skype.Client.CefSharp
                     {
                         if (ctx != null)
                         {
-                            ctx.Post(state => isInitialized = _browser.IsBrowserInitialized, null);
+                            ctx.Post(state => isInitialized = RenderWebBrowser.IsBrowserInitialized, null);
                         }
                         else
                         {
-                            isInitialized = _browser.IsBrowserInitialized;
+                            isInitialized = RenderWebBrowser.IsBrowserInitialized;
                         }
 
                         if (Cef.IsInitialized && isInitialized)
@@ -72,7 +72,7 @@ namespace Skype.Client.CefSharp
 
                     }
 
-                    _browser.Load(SkypeWebAppUrl);
+                    RenderWebBrowser.Load(SkypeWebAppUrl);
                 }
                 catch (Exception e)
                 {

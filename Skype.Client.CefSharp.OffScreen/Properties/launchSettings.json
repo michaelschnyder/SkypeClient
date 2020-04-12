@@ -1,8 +1,7 @@
 {
   "profiles": {
     "Skype.Client.CefSharp.OffScreen": {
-      "commandName": "Project",
-      "commandLineArgs": "michael.schnyder@gmail.com Habakuck12"
+      "commandName": "Project"
     }
   }
 }

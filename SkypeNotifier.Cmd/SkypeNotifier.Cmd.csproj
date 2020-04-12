@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <StartupObject>SkypeNotifier.Cmd.Program</StartupObject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Skype.Client.CefSharp.OffScreen\Skype.Client.CefSharp.OffScreen.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -13,8 +13,8 @@ namespace Skype.Client
 {
     public class SkypeClient
     {
-        public MessageChannel CallSignalingChannel { get; }
-        public MessageChannel EventChannel { get; }
+        protected MessageChannel CallSignalingChannel { get; }
+        protected MessageChannel EventChannel { get; }
 
         public SkypeClient() : this(new MessageChannel(), new MessageChannel()) { }
 
