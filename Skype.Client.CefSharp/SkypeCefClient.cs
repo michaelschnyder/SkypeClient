@@ -74,7 +74,6 @@ namespace Skype.Client.CefSharp
 
                     }
 
-
                     this.UpdateStatus(AppStatus.Authenticating);
                     RenderWebBrowser.Load(SkypeWebAppUrl);
                 }

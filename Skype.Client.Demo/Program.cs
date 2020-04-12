@@ -10,16 +10,16 @@ namespace Skype.Client.Demo
             if (args.Length == 2)
             {
                 Console.WriteLine("Creating new instance of client");
-                var app = new SkypeCefOffScreenClient();
+                var client = new SkypeCefOffScreenClient();
 
-                app.StatusChanged += OnAppOnStatusChanged;
-                app.IncomingCall += (sender, eventArgs) => Console.WriteLine(eventArgs);
-                app.CallStatusChanged += (sender, eventArgs) => Console.WriteLine(eventArgs);
-                app.MessageReceived += (sender, eventArgs) => Console.WriteLine(eventArgs);
+                client.StatusChanged += OnAppOnStatusChanged;
+                client.IncomingCall += (sender, eventArgs) => Console.WriteLine(eventArgs);
+                client.CallStatusChanged += (sender, eventArgs) => Console.WriteLine(eventArgs);
+                client.MessageReceived += (sender, eventArgs) => Console.WriteLine(eventArgs);
 
                 Console.WriteLine("Starting authentication. This might take a few seconds.");
 
-                app.Login(args[0], args[1]);
+                client.Login(args[0], args[1]);
 
                 Console.ReadKey();
             }
