@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Threading;
 using CefSharp;
 using CefSharp.Extensions;
 using CefSharp.Extensions.Interception;
@@ -46,17 +46,18 @@ namespace SkypeWebPageHost
 
         public void Login(string user, string password)
         {
-            var callerDispatcher = Dispatcher.CurrentDispatcher;
+            var ctx = SynchronizationContext.Current;
 
             Task.Run(async () =>
             {
                 try
                 {
                     bool waitForInitialization = true;
+                    bool isInitialized = false;
+
                     while (waitForInitialization)
                     {
-                        bool isInitialized = false;
-                        await callerDispatcher.InvokeAsync(() => isInitialized = _browser.IsBrowserInitialized);
+                        ctx.Post(state => isInitialized = _browser.IsBrowserInitialized, null);
 
                         if (Cef.IsInitialized && isInitialized)
                         {
