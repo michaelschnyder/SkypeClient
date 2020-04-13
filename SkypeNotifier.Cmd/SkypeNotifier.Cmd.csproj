@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <StartupObject>SkypeNotifier.Cmd.Program</StartupObject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Telegram.Bot" Version="15.5.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Skype.Client.CefSharp.OffScreen\Skype.Client.CefSharp.OffScreen.csproj" />
+    <ProjectReference Include="..\Skype.Client.CefSharp\Skype.Client.CefSharp.csproj" />
+    <ProjectReference Include="..\Skype.Client\Skype.Client.csproj" />
+  </ItemGroup>
+
+</Project>
