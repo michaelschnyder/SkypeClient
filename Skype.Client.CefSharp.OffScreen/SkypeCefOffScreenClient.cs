@@ -1,6 +1,8 @@
 ﻿using System;
 using CefSharp;
 using CefSharp.OffScreen;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Skype.Client.CefSharp.OffScreen
 {
@@ -12,7 +14,11 @@ namespace Skype.Client.CefSharp.OffScreen
             Cef.Initialize(new CefSettings() { LogSeverity = LogSeverity.Error }, performDependencyCheck: true, browserProcessHandler: null);
         }
 
-        public SkypeCefOffScreenClient() : base(new ChromiumWebBrowser())
+        public SkypeCefOffScreenClient() : this(NullLoggerFactory.Instance)
+        {
+        }
+
+        public SkypeCefOffScreenClient(ILoggerFactory loggerFactory) : base(new ChromiumWebBrowser(), loggerFactory)
         {
         }
 

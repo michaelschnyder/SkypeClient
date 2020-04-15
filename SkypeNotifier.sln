@@ -5,17 +5,17 @@ VisualStudioVersion = 16.0.30002.166
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CefSharp.Extensions", "CefSharp.Extensions\CefSharp.Extensions.csproj", "{94E4C56D-7334-4DDE-A781-74C92D8F6176}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skype.Client", "Skype.Client\Skype.Client.csproj", "{0BD94170-3405-40F1-BFB3-3710A3C9C906}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Skype.Client", "Skype.Client\Skype.Client.csproj", "{0BD94170-3405-40F1-BFB3-3710A3C9C906}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skype.Client.CefSharp", "Skype.Client.CefSharp\Skype.Client.CefSharp.csproj", "{6FC3BC7B-5C35-42E3-8F80-A5E7060B87E4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Skype.Client.CefSharp", "Skype.Client.CefSharp\Skype.Client.CefSharp.csproj", "{6FC3BC7B-5C35-42E3-8F80-A5E7060B87E4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skype.Client.CefSharp.Wpf", "Skype.Client.CefSharp.Wpf\Skype.Client.CefSharp.Wpf.csproj", "{B3DBD6B3-D104-456F-86CB-9069AF5CA165}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skype.Client.CefSharp.OffScreen", "Skype.Client.CefSharp.OffScreen\Skype.Client.CefSharp.OffScreen.csproj", "{EE1829D8-23CA-410D-8B9F-370107528535}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Skype.Client.CefSharp.OffScreen", "Skype.Client.CefSharp.OffScreen\Skype.Client.CefSharp.OffScreen.csproj", "{EE1829D8-23CA-410D-8B9F-370107528535}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Skype.Client.Demo", "Skype.Client.Demo\Skype.Client.Demo.csproj", "{8FA7339C-C0C6-4B47-845C-C42D9329B4A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkypeNotifier.Cmd", "SkypeNotifier.Cmd\SkypeNotifier.Cmd.csproj", "{398F3804-335B-4854-9265-B487B37D6C21}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkypeNotifier.Cmd", "SkypeNotifier.Cmd\SkypeNotifier.Cmd.csproj", "{398F3804-335B-4854-9265-B487B37D6C21}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

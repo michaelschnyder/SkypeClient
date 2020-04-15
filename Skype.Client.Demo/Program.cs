@@ -1,4 +1,7 @@
 ﻿using System;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Console;
 using Skype.Client.CefSharp.OffScreen;
 
 namespace Skype.Client.Demo
@@ -7,10 +10,25 @@ namespace Skype.Client.Demo
     {
         static void Main(string[] args)
         {
+            IServiceCollection services = new ServiceCollection(); 
+            services.AddLogging(logging =>
+            {
+                logging.AddDebug();
+                logging.AddConsole();
+            });
+
+#if DEBUG
+            services.Configure<LoggerFilterOptions>(options => options.MinLevel = LogLevel.Debug);
+#endif
+
+            services.AddSingleton<SkypeCefOffScreenClient>();
+
+            var serviceProvider = services.BuildServiceProvider();
+
             if (args.Length == 2)
             {
                 Console.WriteLine("Creating new instance of client");
-                var client = new SkypeCefOffScreenClient();
+                var client = serviceProvider.GetService<SkypeCefOffScreenClient>();
 
                 client.StatusChanged += OnAppOnStatusChanged;
                 client.IncomingCall += (sender, eventArgs) => Console.WriteLine(eventArgs);

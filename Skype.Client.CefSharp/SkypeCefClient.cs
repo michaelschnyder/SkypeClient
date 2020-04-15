@@ -5,6 +5,8 @@ using CefSharp;
 using CefSharp.Extensions;
 using CefSharp.Extensions.Interception;
 using CefSharp.Internals;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Skype.Client.CefSharp
 {
@@ -15,10 +17,16 @@ namespace Skype.Client.CefSharp
         private const string EventMessageUrl = "gateway.messenger.live.com/v1";
 
         private readonly PageInteraction _pageInteraction;
+        private ILogger _logger;
         protected IRenderWebBrowser RenderWebBrowser { get; }
 
-        public SkypeCefClient(IRenderWebBrowser browser)
+        public SkypeCefClient(IRenderWebBrowser browser) : this(browser, NullLoggerFactory.Instance)
         {
+        }
+
+        public SkypeCefClient(IRenderWebBrowser browser, ILoggerFactory loggerFactory) : base(loggerFactory)
+        {
+            _logger = loggerFactory.CreateLogger(typeof(SkypeCefClient));
             RenderWebBrowser = browser;
 
             _pageInteraction = new PageInteraction(browser);
@@ -34,6 +42,7 @@ namespace Skype.Client.CefSharp
 
         private void RenderWebBrowserOnFrameLoadStart(object sender, FrameLoadStartEventArgs e)
         {
+            _logger.LogDebug("Navigation started to url '{url}'", e.Frame.Url);
             if (Status == AppStatus.Authenticating && e.Frame.Url == SkypeWebAppUrl)
             {
                 this.UpdateStatus(AppStatus.Authenticated);
@@ -54,6 +63,7 @@ namespace Skype.Client.CefSharp
                     bool waitForInitialization = true;
                     bool isInitialized = false;
 
+                    _logger.LogDebug("Login started. Waiting for CefBrowser to be initialized");
                     while (waitForInitialization)
                     {
                         if (ctx != null)
@@ -75,18 +85,27 @@ namespace Skype.Client.CefSharp
                     }
 
                     this.UpdateStatus(AppStatus.Authenticating);
+                    _logger.LogDebug("CefBrowser Initialized. Navigating to login page {loginPage}", SkypeWebAppUrl);
+
                     RenderWebBrowser.Load(SkypeWebAppUrl);
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e);
+                    _logger.LogError(e, "Error happened while awaiting initialization phase of CefBrowser");
                     throw;
                 }
 
+                
+                _logger.LogDebug("Filling in user '{user}' to login form", user);
                 await _pageInteraction.SetElementTextByName("loginfmt", user);
+
+                _logger.LogDebug("Continue to password page by clicking button");
                 await _pageInteraction.ClickButtonById("idSIButton9");
 
+                _logger.LogDebug("Filling in password to login form");
                 await _pageInteraction.SetElementTextByName("passwd", password);
+
+                _logger.LogDebug("Complete login flow by clicking button");
                 await _pageInteraction.ClickButtonById("idSIButton9");
             });
         }

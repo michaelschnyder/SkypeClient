@@ -2,6 +2,8 @@
 using System.IO;
 using System.Text;
 using System.Xml.Serialization;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Newtonsoft.Json;
 using Skype.Client.Channel;
 using Skype.Client.Protocol.Events;
@@ -12,6 +14,9 @@ namespace Skype.Client
 {
     public class SkypeClient
     {
+        private readonly ILoggerFactory _loggerFactory;
+        private ILogger _logger;
+
         protected MessageChannel CallSignalingChannel { get; }
         protected MessageChannel EventChannel { get; }
 
@@ -25,10 +30,17 @@ namespace Skype.Client
 
         public AppStatus Status { get; private set; }
 
-        public SkypeClient()
+        public SkypeClient() : this(NullLoggerFactory.Instance)
         {
-            CallSignalingChannel = new MessageChannel();
-            EventChannel = new MessageChannel();
+        }
+
+        public SkypeClient(ILoggerFactory loggerFactory)
+        {
+            _logger = loggerFactory.CreateLogger(typeof(SkypeClient));
+            _loggerFactory = loggerFactory;
+
+            CallSignalingChannel = new MessageChannel(loggerFactory.CreateLogger(typeof(MessageChannel)));
+            EventChannel = new MessageChannel(loggerFactory.CreateLogger(typeof(MessageChannel)));
 
             CallSignalingChannel.MessagePublished += CallSignalingChannelOnMessagePublished;
             EventChannel.MessagePublished += EventChannelOnMessagePublished;
@@ -58,17 +70,42 @@ namespace Skype.Client
             }
             
             var messageFrame = JsonConvert.DeserializeObject<Frame>(e.Message);
-            if (messageFrame.EventMessages == null) return;
-
-            foreach (var eventMessage in messageFrame.EventMessages)
+            
+            if (messageFrame.EventMessages != null)
             {
-                if (HandleCallLogMessages(eventMessage)) continue;
+                foreach (var eventMessage in messageFrame.EventMessages)
+                {
+                    if (HandleCallLogMessages(eventMessage)) continue;
 
-                if (HandleChatMessage(eventMessage)) continue;
+                    if (HandleChatMessage(eventMessage)) continue;
 
-                if (HandleCallUpdates(eventMessage)) continue;
+                    if (HandleCallUpdates(eventMessage)) continue;
 
-                OnUnhandledEventMessage(new EventMessageEventArgs {EventMessage = eventMessage});
+                    OnUnhandledEventMessage(new EventMessageEventArgs {EventMessage = eventMessage});
+                    _logger.LogWarning("Unable to handle eventMessage '{id}' {eventMessage}", eventMessage.Id,
+                        JsonConvert.SerializeObject(eventMessage));
+                }
+            }
+
+            if (messageFrame.SyncMessages != null)
+            {
+                foreach (var syncMessage in messageFrame.SyncMessages)
+                {
+                    _logger.LogWarning("Unable to handle event '{id}' {eventMessage}", syncMessage.Id, JsonConvert.SerializeObject(syncMessage));
+                }
+            }
+
+            if (messageFrame.Responses != null)
+            {
+                foreach (var response in messageFrame.Responses)
+                {
+                    _logger.LogWarning("Unable to handle response {eventMessage}", JsonConvert.SerializeObject(response));
+                }
+            }
+
+            if (messageFrame.EventMessages == null && messageFrame.SyncMessages == null && messageFrame.Responses == null)
+            {
+                _logger.LogWarning("Could not understand message frame {rawMessage}", e.Message);
             }
         }
 
