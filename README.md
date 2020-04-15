@@ -13,7 +13,7 @@ Skype Notifier consist of a comple of libraries that eventually team up to send 
 In the current state the application provides console output for incoming messages and calls, as seen below
 ![Communicating with Skype running in console](skype-console-client-demo.gif)
 
-The shown demo can be found in `Skype.Client.CefSharp.OffScreen` project
+The shown demo can be found in `Skype.Client.Demo` project
 
 ## Acknowledgements
 This project is based on 
