@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Console;
 using Skype.Client.CefSharp.OffScreen;
 
 namespace Skype.Client.Demo
@@ -49,11 +48,7 @@ namespace Skype.Client.Demo
 
         private static void OnAppOnStatusChanged(object sender, StatusChangedEventArgs eventArgs)
         {
-            if (eventArgs.New != AppStatus.Connected)
-            {
-                Console.WriteLine($"Client status: {eventArgs.New}");
-            }
-            else
+            if (eventArgs.New == AppStatus.Connected)
             {
                 Console.WriteLine("Ready! :). You will see incoming messages and calls on this command line shell. Press any key to exit.");
             }
