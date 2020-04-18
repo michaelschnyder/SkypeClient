@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using Skype.Client.Channel;
 using Skype.Client.Protocol.Contacts;
 using Skype.Client.Protocol.Events;
+using Skype.Client.Protocol.Events.Resource;
 using Skype.Client.Protocol.Events.Resource.Content;
 using Skype.Client.Protocol.General;
 using Skype.Client.Protocol.People;
@@ -170,16 +171,71 @@ namespace Skype.Client
             {
                 foreach (var eventMessage in messageFrame.EventMessages)
                 {
+                    if (HandleUserPresence(eventMessage)) continue;
+                    
+                    if (HandleEndpointPresence(eventMessage)) continue;
+                    
                     if (HandleCallLogMessages(eventMessage)) continue;
+
+                    if (HandleCallPreFlightEvent(eventMessage)) continue;
 
                     if (HandleChatMessage(eventMessage)) continue;
 
+                    if (HandleTypingMessage(eventMessage)) continue;
+
                     if (HandleCallUpdates(eventMessage)) continue;
 
+                    if (HandleCustomUserProperties(eventMessage)) continue;
+
                     OnUnhandledEventMessage(new EventMessageEventArgs {EventMessage = eventMessage});
-                    _logger.LogWarning("Unable to handle eventMessage '{id}'", eventMessage.Id);
+                    _logger.LogWarning("Unable to handle eventMessage '{id}' of type '{type}' with resource type '{resourceType}'", eventMessage.Id, eventMessage.Type, eventMessage.ResourceType);
                 }
             }
+        }
+
+        private bool HandleCustomUserProperties(EventMessage eventMessage)
+        {
+            return true;
+        }
+
+        private bool HandleCallPreFlightEvent(EventMessage eventMessage)
+        {
+            if (!(eventMessage.Resource is NewMessageResource res)) return false;
+
+            if (res.MessageType == "Signal/Flamingo")
+            {
+                _logger.LogInformation("Incoming call from '{}'", res.CallerDisplayName);
+                return true;
+            }
+
+            return false;
+        }
+        
+        private bool HandleTypingMessage(EventMessage eventMessage)
+        {
+            if (!(eventMessage.Resource is NewMessageResource res)) return false;
+
+            if (res.MessageType == "Control/Typing")
+            {
+                _logger.LogInformation("User '{}' is typing", res.ImDisplayName);
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool HandleEndpointPresence(EventMessage eventMessage)
+        {
+            if (!(eventMessage.Resource is EndpointPresenceResource res)) return false;
+
+            return true;
+        }
+
+        private bool HandleUserPresence(EventMessage eventMessage)
+        {
+            if (!(eventMessage.Resource is UserPresenceResource res)) return false;
+
+            return true;
         }
 
         protected void UpdateStatus(AppStatus appStatus)
@@ -197,13 +253,15 @@ namespace Skype.Client
 
         private bool HandleCallUpdates(EventMessage eventMessage)
         {
-            var messageType = eventMessage.Resource?.MessageType;
+            if (!(eventMessage.Resource is NewMessageResource res)) return false;
+
+            var messageType = res.MessageType;
             if (messageType != "Event/Call")
             {
                 return false;
             }
 
-            var callInformationXmlString = eventMessage.Resource.Content;
+            var callInformationXmlString = res.Content;
             if (callInformationXmlString == null)
             {
                 return false;
@@ -218,10 +276,19 @@ namespace Skype.Client
                 return false;
             }
 
+            if (partsList.Type == "started")
+            {
+                _logger.LogInformation("Call with '{caller}' has started. Call-Id: {callId}", res.ImDisplayName, partsList.CallId);
+            }
+            else
+            {
+                _logger.LogInformation("Call with '{caller}' has ended. Call-Id: {callId}", res.ImDisplayName, partsList.CallId);
+            }
+
             OnCallStatusChanged(new CallEventArgs
             {
                 Type = partsList.Type == "started" ? CallAction.Accepted : CallAction.Ended,
-                CallerName = eventMessage.Resource.ImDisplayName,
+                CallerName = res.ImDisplayName,
                 CallId = partsList.CallId
             });
 
@@ -231,24 +298,24 @@ namespace Skype.Client
 
         private bool HandleChatMessage(EventMessage eventMessage)
         {
-            if (eventMessage.ResourceType == "CustomUserProperties" || eventMessage.ResourceType == "UserPresence")
+            if (!(eventMessage.Resource is NewMessageResource res))
             {
                 return false;
             }
 
-            var messageType = eventMessage.Resource?.MessageType;
+            var messageType = res.MessageType;
             if (messageType != "RichText")
             {
                 return false;
             }
 
-            var messageContent = eventMessage.Resource.Content;
+            var messageContent = res.Content;
             if (messageContent == null)
             {
                 return false;
             }
 
-            var senderProfileUrl = eventMessage.Resource.From;
+            var senderProfileUrl = res.From;
 
             if (senderProfileUrl.Contains(this.Me.Id))
             {
@@ -256,22 +323,40 @@ namespace Skype.Client
                 return true;
             }
 
+            _logger.LogInformation("Chat message received from '{sender}'. Content: {rawContent}", res.ImDisplayName, messageContent);
+
             OnMessageReceived(new MessageReceivedEventArgs
             {
-                SenderName = eventMessage.Resource.ImDisplayName,
+                SenderName = res.ImDisplayName,
                 MessageHtml = messageContent
             });
 
             return true;
+
         }
 
         private bool HandleCallLogMessages(EventMessage eventMessage)
         {
-            var callLog = eventMessage.Resource?.Properties?.CallLog;
+            if (!(eventMessage.Resource is NewMessageResource res))
+            {
+                return false;
+            }
+
+            var callLog = res?.Properties?.CallLog;
             if (callLog == null || callLog.CallState != "declined" && callLog.CallState != "missed")
             {
                 return false;
             }
+
+            if (callLog.CallState == "declined")
+            {
+                _logger.LogInformation("Declined call from '{caller}'. Call-Id: {callId}", callLog.OriginatorParticipant.DisplayName, callLog.CallId);
+            }
+            else
+            {
+                _logger.LogInformation("Missed call from '{caller}'. Call-Id: {callId}", callLog.OriginatorParticipant.DisplayName, callLog.CallId);
+            }
+
 
             OnCallStatusChanged(new CallEventArgs
             {

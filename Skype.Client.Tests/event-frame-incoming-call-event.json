@@ -1,0 +1,35 @@
+﻿{
+	"eventMessages": [
+		{
+			"id": 1016,
+			"type": "EventMessage",
+			"resourceType": "NewMessage",
+			"time": "2020-04-18T13:42:53Z",
+			"resourceLink": "https://azseas1-client-s.gateway.messenger.live.com/v1/users/ME/conversations/8:mscotch/messages/1587217373972",
+			"resource": {
+				"type": "Message",
+				"ackrequired": "https://azseas1-client-s.gateway.messenger.live.com/v1/users/ME/conversations/ALL/messages/1587217373972/ack",
+				"contenttype": "application/vnd.skype.cc.v1.0+json",
+				"isactive": true,
+				"conversationLink": "https://azseas1-client-s.gateway.messenger.live.com/v1/users/ME/conversations/8:mscotch",
+				"id": "1587217373972",
+				"originalarrivaltime": "2020-04-18T13:42:53.941Z",
+				"version": "1587217373972",
+				"counterpartymessageid": "1587217373972",
+				"callerDisplayName": "Michael Schnyder",
+				"isVideoCall": "false",
+				"skypeguid": "a1dfda7b-6776-4925-81bc-7202eb5ddd7b",
+				"conversationId": "mscotch",
+				"content": "{\"cp\":\"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\",\"callId\":\"a1dfda7b-6776-4925-81bc-7202eb5ddd7b\",\"eventSource\":\"msnp\"}",
+				"imdisplayname": "mscotch",
+				"messagetype": "Signal/Flamingo",
+				"composetime": "2020-04-18T13:42:53.941Z",
+				"from": "https://azseas1-client-s.gateway.messenger.live.com/v1/users/ME/contacts/8:mscotch",
+				"eventId": "107",
+				"expiration": "1587217403",
+				"s2spartnername": "concore_gvc",
+				"origincontextid": "0"
+			}
+		}
+	]
+}

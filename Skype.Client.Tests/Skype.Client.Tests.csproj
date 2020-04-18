@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="event-frame-incoming-call-event.json" />
     <None Remove="event-frame-with-incoming-audio-call.json" />
     <None Remove="event-frame-with-incoming-message.json" />
     <None Remove="event-frame-with-outgoing-message.json" />
@@ -14,6 +15,10 @@
     <None Remove="profile-frame-list.json" />
     <None Remove="profile-frame-self.json" />
     <None Remove="properties-message.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="event-frame-incoming-call-event.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -53,5 +58,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties event-frame-with-incoming-audio-call_1json__JsonSchema="skype" /></VisualStudio></ProjectExtensions>
 
 </Project>

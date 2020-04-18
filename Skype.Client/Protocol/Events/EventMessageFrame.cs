@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Skype.Client.Protocol.Events.Resource;
 
 namespace Skype.Client.Protocol.Events
 {

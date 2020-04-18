@@ -1,0 +1,28 @@
+﻿{
+  "eventMessages": [
+    {
+      "id": 1014,
+      "type": "EventMessage",
+      "resourceType": "NewMessage",
+      "time": "2020-04-18T13:24:01Z",
+      "resourceLink": "https://azseas1-client-s.gateway.messenger.live.com/v1/users/ME/conversations/8:mscotch/messages/1587216241478",
+      "resource": {
+        "type": "Message",
+        "messagetype": "Control/Typing",
+        "originalarrivaltime": "2020-04-18T13:24:01.341Z",
+        "properties": {},
+        "version": "1587216241478",
+        "contenttype": "Application/Message",
+        "origincontextid": "0",
+        "isactive": true,
+        "from": "https://azseas1-client-s.gateway.messenger.live.com/v1/users/ME/contacts/8:mscotch",
+        "id": "1587216241478",
+        "conversationLink": "https://azseas1-client-s.gateway.messenger.live.com/v1/users/ME/conversations/8:mscotch",
+        "counterpartymessageid": "1587216241478",
+        "imdisplayname": "mscotch",
+        "ackrequired": "https://azseas1-client-s.gateway.messenger.live.com/v1/users/ME/conversations/ALL/messages/1587216241478/ack",
+        "composetime": "2020-04-18T13:24:01.341Z"
+      }
+    }
+  ]
+}
