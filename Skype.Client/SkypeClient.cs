@@ -154,6 +154,8 @@ namespace Skype.Client
 
             if (notification?.Participants != null)
             {
+                _logger.LogInformation("Incoming call from '{caller}'. Call-Id: {callId}", notification.Participants.From.DisplayName, notification.DebugContent.CallId);
+
                 OnIncomingCall(new CallEventArgs
                 {
                     Type = CallAction.Incoming,
