@@ -1,0 +1,21 @@
+﻿{
+  "market": "US",
+  "readReceiptsEnabled": "true",
+  "timezone": "Asia/Singapore",
+  "isSetupWizardCompleted": "true",
+  "scheduleNextCallCurrentSuccessfulCalls": "19",
+  "locale": "en-US",
+  "alertsLastReadTime": "1586678237893",
+  "coachMarksSeen": "[10,13,2,1]",
+  "lastActivityAt": "1587199536",
+  "lastActivityAt2": "1587199222",
+  "userRing": "0",
+  "isEncryptionCapable": "True",
+  "cnsLongPollEnabled": "False",
+  "cnsPushEnabled": "False",
+  "cid": "-1732777502064353176",
+  "cidHex": "E7F3F00AE2AA6068",
+  "dogfoodUser": false,
+  "primaryMemberName": "live:.cid.e7f3f00ae2aa6068",
+  "skypeName": "live:.cid.e7f3f00ae2aa6068"
+}

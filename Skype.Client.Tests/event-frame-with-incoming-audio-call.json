@@ -1,0 +1,132 @@
+{
+  "participants": {
+    "from": {
+      "id": "8:mscotch",
+      "displayName": "Michael Schnyder",
+      "endpointId": "234051b9-aaa6-0fd4-b437-946a5a46e4cb",
+      "languageId": "en-GB",
+      "participantId": "0e2a7c4e-3e63-4ddd-9b4a-a157c310dec5",
+      "hidden": false
+    },
+    "to": {
+      "id": "8:live:.cid.e7f3f00ae2aa6068",
+      "displayName": null,
+      "endpointId": "00000000-0000-0000-0000-000000000000",
+      "languageId": null,
+      "participantId": "1a986db1-ca43-4702-a812-eb73d96ea87b",
+      "hidden": false
+    }
+  },
+  "callInvitation": {
+    "callModalities": [ "audio" ],
+    "links": {
+      "progress": "https://cc-usea-07.cc.skype.com:443/cc/v1/incoming/18c43c63-512f-40dd-bbf7-bf104b38e538/24/t/375/progress?i=70",
+      "newOffer": "https://cc-usea-07.cc.skype.com:443/cc/v1/incoming/18c43c63-512f-40dd-bbf7-bf104b38e538/24/t/375/mediaOfferRequest?i=70",
+      "mediaAnswer": "https://cc-usea-07.cc.skype.com:443/cc/v1/incoming/18c43c63-512f-40dd-bbf7-bf104b38e538/24/t/375/mediaAnswer?i=70",
+      "acceptance": "https://cc-usea-07.cc.skype.com:443/cc/v1/incoming/18c43c63-512f-40dd-bbf7-bf104b38e538/24/t/375/accept?i=70",
+      "redirection": "https://cc-usea-07.cc.skype.com:443/cc/v1/incoming/18c43c63-512f-40dd-bbf7-bf104b38e538/24/t/375/redirect?i=70",
+      "callController": "https://callcontroller.invalid",
+      "callLeg": "https://cc-usea-07.cc.skype.com:443/cc/v1/incoming/18c43c63-512f-40dd-bbf7-bf104b38e538/24/t/375/reject?i=70",
+      "subscribe": "https://broker-usea-06.broker.skype.com/api/v1/subscribe/ed9e6871-b593-4de5-ae33-d2f95981594c/0?i=25",
+      "brokerHttpTransport": "http://52.114.133.110/enc"
+    },
+    "mediaContent": null
+  },
+  "additionalActionResponses": [
+    {
+      "url": "https://conv-usea-05.conv.skype.com/conv/8:HkCgYt-DL0qRKot3BuQ6jA",
+      "output": {
+        "roster": {
+          "participants": {
+            "8:mscotch": {
+              "participantLink": "https://conv-usea-05.conv.skype.com/conv/8:HkCgYt-DL0qRKot3BuQ6jA/roster/8:mscotch",
+              "details": {
+                "id": "8:mscotch",
+                "displayName": "Michael Schnyder",
+                "endpointId": "00000000-0000-0000-0000-000000000000",
+                "participantId": null,
+                "languageId": null,
+                "hidden": false
+              },
+              "endpoints": {
+                "234051b9-aaa6-0fd4-b437-946a5a46e4cb": {
+                  "call": { "serverMuteVersion": 0 },
+                  "capabilities": {
+                    "cloudAudioVideoConference": "enabled",
+                    "cloudScreenSharing": "enabled",
+                    "hostlessConference": "disabled",
+                    "cloudMerge": "enabled",
+                    "additionalModalityOperationLinks": "disabled",
+                    "implicitCallback": "disabled",
+                    "autoJoinOnConflict": "disabled",
+                    "supportsCompressedServicePayload": "disabled",
+                    "serverMuteUnmute": "enabled",
+                    "supportNgcMediaControl": "disabled"
+                  },
+                  "participantId": "0e2a7c4e-3e63-4ddd-9b4a-a157c310dec5",
+                  "clientVersion": "CallSignalingAgent (1446/8.56.0.102;release_releases/CL2020.R02.2020.02.01.1;releases/CL2020.R02)",
+                  "endpointMetadata": {
+                    "callTranslatorBotSpokenLanguageLocale": "en-GB",
+                    "callTranslatorBotVoiceCollectionAllowed": false,
+                    "isCallMediaCaptured": false,
+                    "reactionsEnabled": true,
+                    "supportsCallRecording": true,
+                    "supportsNotifyCallMediaCaptured": true
+                  }
+                }
+              },
+              "role": "admin"
+            }
+          },
+          "type": "MultiPartyEndpoint",
+          "sequenceNumber": 0
+        },
+        "conversationController": "https://conv-usea-05.conv.skype.com/conv/8:HkCgYt-DL0qRKot3BuQ6jA",
+        "sequenceNumber": 1,
+        "subject": "",
+        "activeModalities": { "call": null },
+        "state": {
+          "isMultiParty": false,
+          "groupCallInitiator": null,
+          "isBroadcast": false,
+          "isVoiceDataCollectionOn": false
+        },
+        "links": {
+          "leave": "https://conv-usea-05.conv.skype.com/conv/8:HkCgYt-DL0qRKot3BuQ6jA/leave",
+          "addParticipant": "https://conv-usea-05.conv.skype.com/conv/8:HkCgYt-DL0qRKot3BuQ6jA/addParticipant",
+          "removeParticipant": "https://conv-usea-05.conv.skype.com/conv/8:HkCgYt-DL0qRKot3BuQ6jA/removeParticipant",
+          "addModality": "https://conv-usea-05.conv.skype.com/conv/8:HkCgYt-DL0qRKot3BuQ6jA/addModality",
+          "addParticipantAndModality": "https://conv-usea-05.conv.skype.com/conv/8:HkCgYt-DL0qRKot3BuQ6jA/add",
+          "removeModality": "https://conv-usea-05.conv.skype.com/conv/8:HkCgYt-DL0qRKot3BuQ6jA/removeModality",
+          "mute": "https://conv-usea-05.conv.skype.com/conv/8:HkCgYt-DL0qRKot3BuQ6jA/mute",
+          "unmute": "https://conv-usea-05.conv.skype.com/conv/8:HkCgYt-DL0qRKot3BuQ6jA/unmute",
+          "notificationLinks": "https://conv-usea-05.conv.skype.com/conv/8:HkCgYt-DL0qRKot3BuQ6jA/notificationLinks",
+          "merge": "https://conv-usea-05.conv.skype.com/conv/8:HkCgYt-DL0qRKot3BuQ6jA/merge",
+          "updateEndpointMetadata": "https://conv-usea-05.conv.skype.com/conv/8:HkCgYt-DL0qRKot3BuQ6jA/updateEndpointMetadata",
+          "updateEndpointState": "https://conv-usea-05.conv.skype.com/conv/8:HkCgYt-DL0qRKot3BuQ6jA/updateEndpointState",
+          "admit": "https://conv-usea-05.conv.skype.com/conv/8:HkCgYt-DL0qRKot3BuQ6jA/admit",
+          "conversationHttpTransport": "http://52.114.132.92/enc",
+          "publishState": "https://conv-usea-05.conv.skype.com/conv/8:HkCgYt-DL0qRKot3BuQ6jA/publishState",
+          "removeState": "https://conv-usea-05.conv.skype.com/conv/8:HkCgYt-DL0qRKot3BuQ6jA/removeState",
+          "updateMeetingSettings": "https://conv-usea-05.conv.skype.com/conv/8:HkCgYt-DL0qRKot3BuQ6jA/updateMeetingSettings"
+        },
+        "capabilities": {
+          "cloudAudioVideoConference": "enabled",
+          "cloudScreenSharing": "disabled",
+          "hostlessConference": "disabled",
+          "cloudMerge": "disabled",
+          "additionalModalityOperationLinks": "disabled",
+          "implicitCallback": "disabled",
+          "autoJoinOnConflict": "disabled",
+          "supportsCompressedServicePayload": "disabled",
+          "serverMuteUnmute": "disabled",
+          "supportNgcMediaControl": "disabled"
+        }
+      }
+    }
+  ],
+  "debugContent": {
+    "callId": "d2f7e1ef-90f8-4838-9e77-f1d2a1e3672d",
+    "participantId": "1a986db1-ca43-4702-a812-eb73d96ea87b"
+  }
+}

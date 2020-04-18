@@ -1,13 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Newtonsoft.Json;
 using Skype.Client.Channel;
+using Skype.Client.Protocol.Contacts;
 using Skype.Client.Protocol.Events;
 using Skype.Client.Protocol.Events.Resource.Content;
+using Skype.Client.Protocol.General;
+using Skype.Client.Protocol.People;
 using Skype.Client.Protocol.Signaling.CallNotification;
 
 namespace Skype.Client
@@ -15,10 +20,19 @@ namespace Skype.Client
     public class SkypeClient
     {
         private readonly ILoggerFactory _loggerFactory;
-        private ILogger _logger;
+        private readonly ILogger _logger;
 
         protected MessageChannel CallSignalingChannel { get; }
+
         protected MessageChannel EventChannel { get; }
+
+        protected MessageChannel PropertiesChannel { get; }
+
+        protected MessageChannel ProfilesChannel { get; }
+
+        protected MessageChannel ContactsChannel { get; }
+
+        protected MessageChannel UserPresenceChannel { get; }
 
         public event EventHandler<CallEventArgs> IncomingCall;
         public event EventHandler<CallEventArgs> CallStatusChanged;
@@ -39,11 +53,97 @@ namespace Skype.Client
             _logger = loggerFactory.CreateLogger(typeof(SkypeClient));
             _loggerFactory = loggerFactory;
 
-            CallSignalingChannel = new MessageChannel(loggerFactory.CreateLogger(typeof(MessageChannel)));
-            EventChannel = new MessageChannel(loggerFactory.CreateLogger(typeof(MessageChannel)));
+            CallSignalingChannel = new MessageChannel(nameof(CallSignalingChannel), loggerFactory.CreateLogger(typeof(MessageChannel)));
+            EventChannel = new MessageChannel(nameof(EventChannel), loggerFactory.CreateLogger(typeof(MessageChannel)));
+            PropertiesChannel = new MessageChannel(nameof(PropertiesChannel), loggerFactory.CreateLogger(typeof(MessageChannel)));
+            ProfilesChannel = new MessageChannel(nameof(ProfilesChannel), loggerFactory.CreateLogger(typeof(MessageChannel)));
+            ContactsChannel = new MessageChannel(nameof(ContactsChannel), loggerFactory.CreateLogger(typeof(MessageChannel)));
+            UserPresenceChannel = new MessageChannel(nameof(UserPresenceChannel), loggerFactory.CreateLogger(typeof(MessageChannel)));
 
             CallSignalingChannel.MessagePublished += CallSignalingChannelOnMessagePublished;
             EventChannel.MessagePublished += EventChannelOnMessagePublished;
+            PropertiesChannel.MessagePublished += PropertiesChannelOnMessagePublished;
+            ProfilesChannel.MessagePublished += ProfilesChannelOnMessagePublished;
+            ContactsChannel.MessagePublished += ContactsChannelOnMessagePublished;
+            UserPresenceChannel.MessagePublished += UserPresenceChannelOnMessagePublished;
+        }
+
+        private void ContactsChannelOnMessagePublished(object sender, PublishMessageEventArgs e)
+        {
+            var contactsFrame = JsonConvert.DeserializeObject<ContactsFrame>(e.Message);
+
+            if (contactsFrame.Contacts != null)
+            {
+                foreach (var contact in contactsFrame.Contacts)
+                {
+                    if (!this.Contacts.Exists(p => p.Id == contact.Mri))
+                    {
+                        var contactDisplayName = !string.IsNullOrWhiteSpace(contact.DisplayName) ? contact.DisplayName : contact.Profile.Name.First;
+                        var profile = new Profile(contact.Mri, contactDisplayName);
+
+                        this.Contacts.Add(profile);
+                        _logger.LogInformation("Found new contact: '{displayName}' ({id})", profile.DisplayName, profile.Id);
+                    }
+                }
+            }
+        }
+
+        private void ProfilesChannelOnMessagePublished(object sender, PublishMessageEventArgs e)
+        {
+            var profileFrame = JsonConvert.DeserializeObject<ProfileFrame>(e.Message);
+
+            if (profileFrame == null)
+            {
+                return;
+            }
+
+            foreach (var item in profileFrame.Profiles)
+            {
+                var profile = new Profile(item.Key, item.Value.Profile.DisplayName);
+                    
+                if (item.Value.Authorized)
+                {
+                    this.Me = profile;
+
+                    if (this.Status != AppStatus.Ready)
+                    {
+                        _logger.LogInformation("Logged in as '{}', Id: {id}. Client is ready for interactions.", profile.DisplayName, profile.Id);
+                        this.UpdateStatus(AppStatus.Ready);
+                    }
+
+                }
+                else
+                {
+                    _logger.LogInformation("Found new contact: '{displayName}' ({id})", profile.DisplayName, profile.Id);
+                    this.Contacts.Add(profile);
+                }
+            }
+        }
+
+        private void PropertiesChannelOnMessagePublished(object sender, PublishMessageEventArgs e)
+        {
+            var props = JsonConvert.DeserializeObject<Properties>(e.Message);
+
+            if (props != null)
+            {
+                this.Properties = props;
+            }
+
+            if (this.Status != AppStatus.Connected)
+            {
+                this.UpdateStatus(AppStatus.Connected);
+            }
+        }
+
+        public Properties Properties { get; private set; }
+        
+        public Profile Me { get; set; }
+        
+        public List<Profile> Contacts { get; } = new List<Profile>();
+
+        private void UserPresenceChannelOnMessagePublished(object sender, PublishMessageEventArgs e)
+        {
+            
         }
 
         private void CallSignalingChannelOnMessagePublished(object sender, PublishMessageEventArgs e)
@@ -64,12 +164,7 @@ namespace Skype.Client
 
         private void EventChannelOnMessagePublished(object sender, PublishMessageEventArgs e)
         {
-            if (this.Status != AppStatus.Connected)
-            {
-                this.UpdateStatus(AppStatus.Connected);
-            }
-            
-            var messageFrame = JsonConvert.DeserializeObject<Frame>(e.Message);
+            var messageFrame = JsonConvert.DeserializeObject<EventMessageFrame>(e.Message);
             
             if (messageFrame.EventMessages != null)
             {
@@ -82,30 +177,8 @@ namespace Skype.Client
                     if (HandleCallUpdates(eventMessage)) continue;
 
                     OnUnhandledEventMessage(new EventMessageEventArgs {EventMessage = eventMessage});
-                    _logger.LogWarning("Unable to handle eventMessage '{id}' {eventMessage}", eventMessage.Id,
-                        JsonConvert.SerializeObject(eventMessage));
+                    _logger.LogWarning("Unable to handle eventMessage '{id}'", eventMessage.Id);
                 }
-            }
-
-            if (messageFrame.SyncMessages != null)
-            {
-                foreach (var syncMessage in messageFrame.SyncMessages)
-                {
-                    _logger.LogWarning("Unable to handle event '{id}' {eventMessage}", syncMessage.Id, JsonConvert.SerializeObject(syncMessage));
-                }
-            }
-
-            if (messageFrame.Responses != null)
-            {
-                foreach (var response in messageFrame.Responses)
-                {
-                    _logger.LogWarning("Unable to handle response {eventMessage}", JsonConvert.SerializeObject(response));
-                }
-            }
-
-            if (messageFrame.EventMessages == null && messageFrame.SyncMessages == null && messageFrame.Responses == null)
-            {
-                _logger.LogWarning("Could not understand message frame {rawMessage}", e.Message);
             }
         }
 
@@ -158,6 +231,11 @@ namespace Skype.Client
 
         private bool HandleChatMessage(EventMessage eventMessage)
         {
+            if (eventMessage.ResourceType == "CustomUserProperties" || eventMessage.ResourceType == "UserPresence")
+            {
+                return false;
+            }
+
             var messageType = eventMessage.Resource?.MessageType;
             if (messageType != "RichText")
             {
@@ -168,6 +246,14 @@ namespace Skype.Client
             if (messageContent == null)
             {
                 return false;
+            }
+
+            var senderProfileUrl = eventMessage.Resource.From;
+
+            if (senderProfileUrl.Contains(this.Me.Id))
+            {
+                // Hide own own chat messages and return unhandled.
+                return true;
             }
 
             OnMessageReceived(new MessageReceivedEventArgs
@@ -221,22 +307,5 @@ namespace Skype.Client
         {
             StatusChanged?.Invoke(this, e);
         }
-    }
-
-    public class StatusChangedEventArgs
-    {
-        public AppStatus Old { get; set; }
-
-        public AppStatus New { get; set; }
-    }
-
-    public enum AppStatus
-    {
-        None,
-        Connected,
-        Initializing,
-        Authenticating,
-        Authenticated,
-        Loading
     }
 }

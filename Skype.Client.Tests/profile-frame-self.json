@@ -1,0 +1,20 @@
+﻿{
+  "profiles": {
+    "8:live:.cid.e7f3f00ae2aa6068": {
+      "status": 200,
+      "type": "skype",
+      "authorized": true,
+      "profile": {
+        "displayName": "Michael (Headless Account)",
+        "gender": "Unspecified",
+        "options": [
+          {
+            "name": "ui.color",
+            "value": {},
+            "isDefault": true
+          }
+        ]
+      }
+    }
+  }
+}

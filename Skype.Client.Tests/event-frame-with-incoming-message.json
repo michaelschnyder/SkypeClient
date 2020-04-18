@@ -1,0 +1,30 @@
+﻿{
+  "eventMessages": [
+    {
+      "id": 1010,
+      "resource": {
+        "ackrequired": "https://azseas1-client-s.gateway.messenger.live.com/v1/users/ME/conversations/ALL/messages/1587040614847/ack",
+        "clientmessageid": "15913811752765545278",
+        "composetime": "2020-04-16T12:36:54.547Z",
+        "content": "Hello You :)",
+        "contenttype": "text",
+        "conversationLink": "https://azseas1-client-s.gateway.messenger.live.com/v1/users/ME/conversations/8:mscotch",
+        "counterpartymessageid": "1587040614847",
+        "from": "https://azseas1-client-s.gateway.messenger.live.com/v1/users/ME/contacts/8:mscotch",
+        "id": "1587040614847",
+        "imdisplayname": "Michael Schnyder",
+        "isactive": true,
+        "messagetype": "RichText",
+        "originalarrivaltime": "2020-04-16T12:36:54.547Z",
+        "origincontextid": "0",
+        "receiverdisplayname": "Michael (Headless Account)",
+        "type": "Message",
+        "version": "1587040614847"
+      },
+      "resourceLink": "https://azseas1-client-s.gateway.messenger.live.com/v1/users/ME/conversations/8:mscotch/messages/1587040614847",
+      "resourceType": "NewMessage",
+      "time": "2020-04-16T12:36:54Z",
+      "type": "EventMessage"
+    }
+  ]
+}

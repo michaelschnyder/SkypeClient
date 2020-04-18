@@ -1,0 +1,22 @@
+﻿{
+  "profiles": {
+    "8:mscotch": {
+      "status": 200,
+      "type": "skype",
+      "authorized": false,
+      "profile": {
+        "displayName": "Michael Schnyder",
+        "birthday": "2020-04-18",
+        "avatarUrl": "https://avatar.skype.com/v1/avatars/mscotch/public",
+        "gender": "Male",
+        "options": [
+          {
+            "name": "ui.color",
+            "value": { "color": "3" },
+            "isDefault": false
+          }
+        ]
+      }
+    }
+  }
+}

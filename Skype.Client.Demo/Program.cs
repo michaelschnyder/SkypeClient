@@ -48,7 +48,7 @@ namespace Skype.Client.Demo
 
         private static void OnAppOnStatusChanged(object sender, StatusChangedEventArgs eventArgs)
         {
-            if (eventArgs.New == AppStatus.Connected)
+            if (eventArgs.New == AppStatus.Ready)
             {
                 Console.WriteLine("Ready! :). You will see incoming messages and calls on this command line shell. Press any key to exit.");
             }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using CefSharp;
@@ -7,6 +8,7 @@ using CefSharp.Extensions.Interception;
 using CefSharp.Internals;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using Skype.Client.Channel;
 
 namespace Skype.Client.CefSharp
 {
@@ -14,10 +16,45 @@ namespace Skype.Client.CefSharp
     {
         private const string SkypeWebAppUrl = "https://web.skype.com/";
         private const string CallSignalingUrl = "cc.skype.com/cc/v1";
-        private const string EventMessageUrl = "gateway.messenger.live.com/v1";
+
+        // Event channel
+        // GET Request URL: https://client-s.gateway.messenger.live.com/v1/users/ME/endpoints/???/subscriptions/0/poll?ackId=12345
+        private static readonly Regex EventMessageUrlPattern = new Regex(@"https://.*messenger.live.com/v1/.*/poll");
+
+        // Publish active status
+        // POST https://azseas1-client-s.gateway.messenger.live.com/v1/users/ME/endpoints/???/active
+        private static readonly Regex OwnStatusUpdateUrlPattern = new Regex(@"https://.*.messenger.live.com/v1/users/ME/endpoints/.*/active");
+        
+        // Own user presence doc
+        // GET https://azseas1-client-s.gateway.messenger.live.com/v1/users/ME/presenceDocs/messagingService
+        private static readonly Regex OwnPresenceStatusUrlPattern = new Regex(@"https://.*messenger.live.com/v1/users/ME/presenceDocs/messagingService");
+
+        // Other User presence doc: https://client-s.gateway.messenger.live.com/v1/users/ME/contacts/ALL/presenceDocs/messagingService?cMri=...
+        private static readonly Regex ContactsUserPresenceUrlPattern = new Regex(@"https://.*messenger.live.com/v1/users/ME/contacts/ALL/presenceDocs/messagingService\?cMri=.*");
+
+        // Active Conversations
+        // GET https://azseas1-client-s.gateway.messenger.live.com/v1/users/ME/conversations?view=supportsExtendedHistory%7Cmsnp24Equivalent&pageSize=25&syncState=...
+        private static readonly Regex ConversationsUrlPattern = new Regex(@"https://.*messenger.live.com/v1/users/ME/conversations\?");
+
+        // Past Messages for conversations
+        // GET https://azseas1-client-s.gateway.messenger.live.com/v1/users/ME/conversations/.../messages?view=supportsExtendedHistory%7Cmsnp24Equivalent%7CsupportsMessageProperties&pageSize=20&syncState=...&startTime=...
+        private static readonly Regex PastMessagesUrlPattern = new Regex(@"https://.*messenger.live.com/v1/users/ME/conversations/.*/messages.*");
+
+        // Properties
+        // GET https://azseas1-client-s.gateway.messenger.live.com/v1/users/ME/properties
+        private static readonly Regex OwnPropertiesUrlPattern = new Regex(@"https://.*messenger.live.com/v1/users/ME/properties");
+
+        // Own profile
+        // POST https://people.skype.com/v2/profiles
+        private static readonly Regex ProfilesUrlPattern = new Regex(@"https://people.skype.com/v2/profiles");
+
+        // Contacts
+        // Request URL: https://edge.skype.com/pcs/contacts/v2/users/self
+        private static readonly Regex ContactsUrlPattern = new Regex(@"https://edge.skype.com/pcs/contacts/v2/users/self");
 
         private readonly PageInteraction _pageInteraction;
-        private ILogger _logger;
+        private readonly ILogger _logger;
+
         protected IRenderWebBrowser RenderWebBrowser { get; }
 
         public SkypeCefClient(IRenderWebBrowser browser) : this(browser, NullLoggerFactory.Instance)
@@ -35,7 +72,11 @@ namespace Skype.Client.CefSharp
             var requestHandlerInterceptionFactory = new RequestHandlerInterceptionFactory();
 
             requestHandlerInterceptionFactory.Register(CallSignalingUrl, new ChannelForwardInterceptor(CallSignalingChannel));
-            requestHandlerInterceptionFactory.Register(EventMessageUrl, new ChannelForwardInterceptor(EventChannel));
+            requestHandlerInterceptionFactory.Register(EventMessageUrlPattern, new ChannelForwardInterceptor(EventChannel));
+            requestHandlerInterceptionFactory.Register(ContactsUserPresenceUrlPattern, new ChannelForwardInterceptor(UserPresenceChannel));
+            requestHandlerInterceptionFactory.Register(OwnPropertiesUrlPattern, new ChannelForwardInterceptor(PropertiesChannel));
+            requestHandlerInterceptionFactory.Register(ProfilesUrlPattern, new ChannelForwardInterceptor(ProfilesChannel));
+            requestHandlerInterceptionFactory.Register(ContactsUrlPattern, new ChannelForwardInterceptor(ContactsChannel));
 
             RenderWebBrowser.RequestHandler = requestHandlerInterceptionFactory;
         }

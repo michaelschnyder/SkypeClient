@@ -99,7 +99,7 @@ namespace SkypeNotifier.Cmd
 
         private static void ClientOnStatusChanged(object? sender, StatusChangedEventArgs e)
         {
-            if (e.New == AppStatus.Connected)
+            if (e.New == AppStatus.Ready)
             {
                 Console.WriteLine("Connected");
             }

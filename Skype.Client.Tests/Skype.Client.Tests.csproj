@@ -1,10 +1,20 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
 
     <IsPackable>false</IsPackable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="event-frame-with-incoming-audio-call.json" />
+    <None Remove="event-frame-with-incoming-message.json" />
+    <None Remove="event-frame-with-outgoing-message.json" />
+    <None Remove="event-frame-with-presence.json" />
+    <None Remove="profile-frame-list.json" />
+    <None Remove="profile-frame-self.json" />
+    <None Remove="properties-message.json" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.3" />
@@ -18,6 +28,30 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Skype.Client\Skype.Client.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="event-frame-with-incoming-audio-call.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="event-frame-with-incoming-message.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="event-frame-with-outgoing-message.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="event-frame-with-presence.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="profile-frame-list.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="profile-frame-self.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="properties-message.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

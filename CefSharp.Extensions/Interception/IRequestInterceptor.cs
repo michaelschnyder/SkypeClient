@@ -4,6 +4,6 @@ namespace CefSharp.Extensions.Interception
 {
     public interface IRequestInterceptor
     {
-        void Execute(IResponse response, MemoryStream stream);
+        void Execute(IRequest request, IResponse response, MemoryStream stream);
     }
 }

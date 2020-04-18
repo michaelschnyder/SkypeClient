@@ -15,7 +15,7 @@ namespace Skype.Client.CefSharp
             _messageChannel = messageChannel;
         }
 
-        public void Execute(IResponse response, MemoryStream stream)
+        public void Execute(IRequest request, IResponse response, MemoryStream stream)
         {
             if (response.Charset != "utf-8" || stream.Length == 0) return;
 
