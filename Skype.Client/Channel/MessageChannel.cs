@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Specialized;
 using Microsoft.Extensions.Logging;
 
 namespace Skype.Client.Channel
@@ -25,5 +26,23 @@ namespace Skype.Client.Channel
         {
             MessagePublished?.Invoke(this, e);
         }
+
+        public void PublishMessage(Request request, Response response)
+        {
+            _logger.LogDebug("Response on channel '{name}': {rawMessage}", _name, response.Content);
+            this.OnMessagePublished(new PublishMessageEventArgs(request, response));
+        }
+    }
+
+    public class Response
+    {
+        public string Content { get; set; }
+
+        public NameValueCollection Headers { get; set; }
+    }
+
+    public class Request
+    {
+        public Uri Uri { get; set; }
     }
 }

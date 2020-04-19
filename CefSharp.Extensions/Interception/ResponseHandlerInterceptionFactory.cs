@@ -15,11 +15,13 @@ namespace CefSharp.Extensions.Interception
 
             if (list.Any())
             {
+                var clonedRequest = new Request {Url = request.Url, Headers = request.Headers, Flags = request.Flags, Method = request.Method, PostData = request.PostData};
+
                 return new DelegatingResourceRequestHandler((response, stream) =>
                 {
                     foreach (var requestInterceptor in list)
                     {
-                        requestInterceptor.Execute(request, response, stream);
+                        requestInterceptor.Execute(clonedRequest, response, stream);
                     }
                 });
             }
