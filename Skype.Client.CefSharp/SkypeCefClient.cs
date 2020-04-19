@@ -71,14 +71,14 @@ namespace Skype.Client.CefSharp
 
             var requestHandlerInterceptionFactory = new RequestHandlerInterceptionFactory();
 
-            requestHandlerInterceptionFactory.Register(CallSignalingUrl, new ChannelForwardInterceptor(CallSignalingChannel));
-            requestHandlerInterceptionFactory.Register(EventMessageUrlPattern, new ChannelForwardInterceptor(EventChannel));
-            requestHandlerInterceptionFactory.Register(ContactsUserPresenceUrlPattern, new ChannelForwardInterceptor(UserPresenceChannel));
-            requestHandlerInterceptionFactory.Register(OwnPropertiesUrlPattern, new ChannelForwardInterceptor(PropertiesChannel));
-            requestHandlerInterceptionFactory.Register(ProfilesUrlPattern, new ChannelForwardInterceptor(ProfilesChannel));
-            requestHandlerInterceptionFactory.Register(ContactsUrlPattern, new ChannelForwardInterceptor(ContactsChannel));
-            requestHandlerInterceptionFactory.Register(ConversationHistoryUrlPattern, new ChannelForwardInterceptor(ConversationHistoryChannel));
-            requestHandlerInterceptionFactory.Register(ConversationChatHistorysUrlPattern, new ChannelForwardInterceptor(ConversationChatHistoryChannel));
+            requestHandlerInterceptionFactory.Register(CallSignalingUrl, new ChannelForwardResponseInterceptor(CallSignalingChannel));
+            requestHandlerInterceptionFactory.Register(EventMessageUrlPattern, new ChannelForwardResponseInterceptor(EventChannel));
+            requestHandlerInterceptionFactory.Register(ContactsUserPresenceUrlPattern, new ChannelForwardResponseInterceptor(UserPresenceChannel));
+            requestHandlerInterceptionFactory.Register(OwnPropertiesUrlPattern, new ChannelForwardResponseInterceptor(PropertiesChannel));
+            requestHandlerInterceptionFactory.Register(ProfilesUrlPattern, new ChannelForwardResponseInterceptor(ProfilesChannel));
+            requestHandlerInterceptionFactory.Register(ContactsUrlPattern, new ChannelForwardResponseInterceptor(ContactsChannel));
+            requestHandlerInterceptionFactory.Register(ConversationHistoryUrlPattern, new ChannelForwardResponseInterceptor(ConversationHistoryChannel));
+            requestHandlerInterceptionFactory.Register(ConversationChatHistorysUrlPattern, new ChannelForwardResponseInterceptor(ConversationChatHistoryChannel));
 
             RenderWebBrowser.RequestHandler = requestHandlerInterceptionFactory;
         }

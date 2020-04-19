@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Text;
 using CefSharp;
 using CefSharp.Extensions.Interception;
@@ -6,11 +8,11 @@ using Skype.Client.Channel;
 
 namespace Skype.Client.CefSharp
 {
-    public class ChannelForwardInterceptor : IRequestInterceptor
+    public class ChannelForwardResponseInterceptor : IRequestInterceptor
     {
         private readonly MessageChannel _messageChannel;
 
-        public ChannelForwardInterceptor(MessageChannel messageChannel)
+        public ChannelForwardResponseInterceptor(MessageChannel messageChannel)
         {
             _messageChannel = messageChannel;
         }
