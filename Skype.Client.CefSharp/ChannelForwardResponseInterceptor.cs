@@ -8,7 +8,7 @@ using Skype.Client.Channel;
 
 namespace Skype.Client.CefSharp
 {
-    public class ChannelForwardResponseInterceptor : IRequestInterceptor
+    public class ChannelForwardResponseInterceptor : IResponseInterceptor
     {
         private readonly MessageChannel _messageChannel;
 

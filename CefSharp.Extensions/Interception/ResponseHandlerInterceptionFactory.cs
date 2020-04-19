@@ -5,9 +5,9 @@ using CefSharp.Handler;
 
 namespace CefSharp.Extensions.Interception
 {
-    public class RequestHandlerInterceptionFactory : RequestHandler
+    public class ResponseHandlerInterceptionFactory : RequestHandler
     {
-        private Dictionary<Regex, List<IRequestInterceptor>> interceptors = new Dictionary<Regex, List<IRequestInterceptor>>();
+        private Dictionary<Regex, List<IResponseInterceptor>> interceptors = new Dictionary<Regex, List<IResponseInterceptor>>();
 
         protected override IResourceRequestHandler GetResourceRequestHandler(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, IRequest request, bool isNavigation, bool isDownload, string requestInitiator, ref bool disableDefaultHandling)
         {
@@ -27,21 +27,21 @@ namespace CefSharp.Extensions.Interception
             return null;
         }
 
-        public void Register(string url, IRequestInterceptor requestInterceptor)
+        public void Register(string url, IResponseInterceptor responseInterceptor)
         {
-            Register(new Regex(url), requestInterceptor);
+            Register(new Regex(url), responseInterceptor);
         }
 
-        public void Register(Regex urlPattern, IRequestInterceptor requestInterceptor)
+        public void Register(Regex urlPattern, IResponseInterceptor responseInterceptor)
         {
 
             if (this.interceptors.ContainsKey(urlPattern))
             {
-                this.interceptors[urlPattern].Add(requestInterceptor);
+                this.interceptors[urlPattern].Add(responseInterceptor);
             }
             else
             {
-                this.interceptors.Add(urlPattern, new List<IRequestInterceptor>() { requestInterceptor });
+                this.interceptors.Add(urlPattern, new List<IResponseInterceptor>() { responseInterceptor });
             }
         }
     }

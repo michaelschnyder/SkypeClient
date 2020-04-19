@@ -69,7 +69,7 @@ namespace Skype.Client.CefSharp
             _pageInteraction = new PageInteraction(browser);
             RenderWebBrowser.FrameLoadStart += RenderWebBrowserOnFrameLoadStart;
 
-            var requestHandlerInterceptionFactory = new RequestHandlerInterceptionFactory();
+            var requestHandlerInterceptionFactory = new ResponseHandlerInterceptionFactory();
 
             requestHandlerInterceptionFactory.Register(CallSignalingUrl, new ChannelForwardResponseInterceptor(CallSignalingChannel));
             requestHandlerInterceptionFactory.Register(EventMessageUrlPattern, new ChannelForwardResponseInterceptor(EventChannel));
