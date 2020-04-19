@@ -14,7 +14,7 @@ namespace SkypeWebPageHost
 
             Browser.IsBrowserInitializedChanged += (sender, args) =>
             {
-                // if (!Browser.IsDisposed) Browser.ShowDevTools();
+                if (!Browser.IsDisposed) Browser.ShowDevTools();
             };
         }
     }
