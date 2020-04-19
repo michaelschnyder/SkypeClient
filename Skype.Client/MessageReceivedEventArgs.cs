@@ -2,6 +2,8 @@
 {
     public class MessageReceivedEventArgs
     {
+        public Profile Sender { get; set; }
+
         public string SenderName { get; set; }
 
         public string MessageHtml { get; set; }

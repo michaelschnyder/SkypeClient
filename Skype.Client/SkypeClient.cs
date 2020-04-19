@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -144,8 +147,18 @@ namespace Skype.Client
                 }
                 else
                 {
-                    _logger.LogInformation("Found new contact: '{displayName}' ({id})", profile.DisplayName, profile.Id);
-                    this.Contacts.Add(profile);
+                    var existing = Contacts.SingleOrDefault(c => c.Id == profile.Id);
+                    if (existing != null)
+                    {
+                        _logger.LogInformation("Updating existing contact '{displayName}' ({id})", existing.DisplayName, existing.Id);
+                        existing.DisplayName = profile.DisplayName;
+                    }
+                    else
+                    {
+                        _logger.LogInformation("Found new contact: '{displayName}' ({id})", profile.DisplayName, profile.Id);
+                        this.Contacts.Add(profile);
+
+                    }
                 }
             }
         }
@@ -183,6 +196,47 @@ namespace Skype.Client
         public Profile Me { get; set; }
         
         public List<Profile> Contacts { get; } = new List<Profile>();
+
+        public async Task<bool> SendMessage(Profile recipient, string message)
+        {
+            HttpClient client = new HttpClient();
+
+            var r = new Random(DateTime.Now.Millisecond);
+
+            var barray = new byte[64 / 8];
+            r.NextBytes(barray);
+
+            var rint64 = BitConverter.ToUInt64(barray, 0);
+
+            var content = JsonConvert.SerializeObject(new
+                { 
+                    clientmessageid = "1" + rint64.ToString().Substring(1),
+                    composetime = $"{DateTime.UtcNow:yyyy-MM-dd}T{DateTime.UtcNow:HH:mm:ss}.{DateTime.UtcNow.Millisecond:D3}Z",
+                    content  = message,
+                    messagetype = "RichText",
+                    contenttype = "text"
+                }
+            );
+
+            var httpRequestMessage = new HttpRequestMessage();
+            httpRequestMessage.Method = HttpMethod.Post;
+            var userId = recipient.Id;
+            
+            httpRequestMessage.RequestUri = new Uri($"https://client-s.gateway.messenger.live.com/v1/users/ME/conversations/{userId}/messages");
+            httpRequestMessage.Headers.Add("RegistrationToken", this.Credentials.RegistrationToken);
+            httpRequestMessage.Content = new StringContent(content, Encoding.UTF8, "application/json");
+
+            var response = await client.SendAsync(httpRequestMessage);
+
+            if (response.StatusCode == HttpStatusCode.Created)
+            {
+                return true;
+            }
+
+            var responseString = await response.Content.ReadAsStringAsync();
+            _logger.LogError("Error while sending message to '{recipient}'. Status code: {statusCode}, content: {content}", recipient.DisplayName, response.StatusCode, responseString);
+            return false;
+        }
 
         private void UserPresenceChannelOnMessagePublished(object sender, PublishMessageEventArgs e)
         {
@@ -371,8 +425,11 @@ namespace Skype.Client
 
             _logger.LogInformation("Chat message received from '{sender}'. Content: {rawContent}", res.ImDisplayName, messageContent);
 
+            var profile = this.Contacts.SingleOrDefault(c => res.From.Contains(c.Id));
+
             OnMessageReceived(new MessageReceivedEventArgs
             {
+                Sender = profile,
                 SenderName = res.ImDisplayName,
                 MessageHtml = messageContent
             });
