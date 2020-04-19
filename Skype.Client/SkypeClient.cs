@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 using Microsoft.Extensions.Logging;
@@ -156,6 +157,17 @@ namespace Skype.Client
             if (props != null)
             {
                 this.Properties = props;
+
+                if (e.Response.Headers.AllKeys.Contains("Set-RegistrationToken"))
+                {
+                    var registrationToken = e.Response.Headers["Set-RegistrationToken"];
+
+                    if (!registrationToken.Equals(Credentials.RegistrationToken))
+                    {
+                        _logger.LogInformation("Received registrationToken: {registrationToken} (Length: {len})", registrationToken.Substring(0, 50) + "...", registrationToken.Length);
+                        this.Credentials.RegistrationToken = registrationToken;
+                    }
+                }
             }
 
             if (this.Status != AppStatus.Connected)
@@ -163,6 +175,8 @@ namespace Skype.Client
                 this.UpdateStatus(AppStatus.Connected);
             }
         }
+
+        public CredentialsStore Credentials { get; set; } = new CredentialsStore();
 
         public Properties Properties { get; private set; }
         
@@ -424,5 +438,10 @@ namespace Skype.Client
         {
             StatusChanged?.Invoke(this, e);
         }
+    }
+
+    public class CredentialsStore
+    {
+        public string RegistrationToken { get; set; }
     }
 }
