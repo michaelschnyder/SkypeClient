@@ -1,13 +1,17 @@
-# SkypeNotifier
-Skype Notifier consist of a comple of libraries that eventually team up to send notifications about incoming Skype calls to other devices like an Arduino/ESP32/ESP8266.
+# Skype Client
+Skype Client is a C# library that allows hosting a Skype Client in .NET Core. It bases on CEFSharp (CEF Browser) to estabish a Skype client session.
 
-**Current Status** <br/>
-✔️ Login and recieve notifications on a console or WPF application <br/>
-✔️ Code split for reusability with minimal dependencies <br/>
+## Feature Set
+The library is still under heavy development and should be considered as PoC. The following functionalities are suppored:
 
-**Pending** <br/>
-💡 Forward notifications to listener device <br/>
-💡 Wrapper to hide heavy dependencies to CefSharp
+| Functionality      | Status | Details |
+| -------------      | ---    | ------------------------------- |
+| Login			     | ✔️     | E-Mail adress and password 
+| Contacts           | ✔️     | Minimalistic list without user details 
+| Recieving Messages | ✔️     | Only text messages are supported 
+| Sending Messages   | ✔️     | Only text messages are supported  
+| Audio, Video Call  | 🚧     | Only call notifications are available 
+| Call Updates       | ✔️     | Events for missed, active, ended, declined calls 
 
 ## Demo
 In the current state the application provides console output for incoming messages and calls, as seen below
