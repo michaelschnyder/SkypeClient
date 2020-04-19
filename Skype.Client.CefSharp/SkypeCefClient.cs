@@ -34,11 +34,11 @@ namespace Skype.Client.CefSharp
 
         // Active Conversations
         // GET https://azseas1-client-s.gateway.messenger.live.com/v1/users/ME/conversations?view=supportsExtendedHistory%7Cmsnp24Equivalent&pageSize=25&syncState=...
-        private static readonly Regex ConversationsUrlPattern = new Regex(@"https://.*messenger.live.com/v1/users/ME/conversations\?");
+        private static readonly Regex ConversationHistoryUrlPattern = new Regex(@"https://.*messenger.live.com/v1/users/ME/conversations\?");
 
         // Past Messages for conversations
         // GET https://azseas1-client-s.gateway.messenger.live.com/v1/users/ME/conversations/.../messages?view=supportsExtendedHistory%7Cmsnp24Equivalent%7CsupportsMessageProperties&pageSize=20&syncState=...&startTime=...
-        private static readonly Regex PastMessagesUrlPattern = new Regex(@"https://.*messenger.live.com/v1/users/ME/conversations/.*/messages.*");
+        private static readonly Regex ConversationChatHistorysUrlPattern = new Regex(@"https://.*messenger.live.com/v1/users/ME/conversations/.*/messages.*");
 
         // Properties
         // GET https://azseas1-client-s.gateway.messenger.live.com/v1/users/ME/properties
@@ -77,6 +77,8 @@ namespace Skype.Client.CefSharp
             requestHandlerInterceptionFactory.Register(OwnPropertiesUrlPattern, new ChannelForwardInterceptor(PropertiesChannel));
             requestHandlerInterceptionFactory.Register(ProfilesUrlPattern, new ChannelForwardInterceptor(ProfilesChannel));
             requestHandlerInterceptionFactory.Register(ContactsUrlPattern, new ChannelForwardInterceptor(ContactsChannel));
+            requestHandlerInterceptionFactory.Register(ConversationHistoryUrlPattern, new ChannelForwardInterceptor(ConversationHistoryChannel));
+            requestHandlerInterceptionFactory.Register(ConversationChatHistorysUrlPattern, new ChannelForwardInterceptor(ConversationChatHistoryChannel));
 
             RenderWebBrowser.RequestHandler = requestHandlerInterceptionFactory;
         }

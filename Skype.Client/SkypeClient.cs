@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 using Microsoft.Extensions.Logging;
@@ -9,12 +8,13 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Newtonsoft.Json;
 using Skype.Client.Channel;
 using Skype.Client.Protocol.Contacts;
+using Skype.Client.Protocol.Conversation;
 using Skype.Client.Protocol.Events;
 using Skype.Client.Protocol.Events.Resource;
 using Skype.Client.Protocol.Events.Resource.Content;
-using Skype.Client.Protocol.General;
 using Skype.Client.Protocol.People;
 using Skype.Client.Protocol.Signaling.CallNotification;
+using Properties = Skype.Client.Protocol.General.Properties;
 
 namespace Skype.Client
 {
@@ -35,6 +35,10 @@ namespace Skype.Client
 
         protected MessageChannel UserPresenceChannel { get; }
 
+        protected MessageChannel ConversationHistoryChannel { get; }
+        
+        protected MessageChannel ConversationChatHistoryChannel { get; }
+
         public event EventHandler<CallEventArgs> IncomingCall;
         public event EventHandler<CallEventArgs> CallStatusChanged;
 
@@ -54,19 +58,43 @@ namespace Skype.Client
             _logger = loggerFactory.CreateLogger(typeof(SkypeClient));
             _loggerFactory = loggerFactory;
 
-            CallSignalingChannel = new MessageChannel(nameof(CallSignalingChannel), loggerFactory.CreateLogger(typeof(MessageChannel)));
             EventChannel = new MessageChannel(nameof(EventChannel), loggerFactory.CreateLogger(typeof(MessageChannel)));
+            CallSignalingChannel = new MessageChannel(nameof(CallSignalingChannel), loggerFactory.CreateLogger(typeof(MessageChannel)));
             PropertiesChannel = new MessageChannel(nameof(PropertiesChannel), loggerFactory.CreateLogger(typeof(MessageChannel)));
             ProfilesChannel = new MessageChannel(nameof(ProfilesChannel), loggerFactory.CreateLogger(typeof(MessageChannel)));
             ContactsChannel = new MessageChannel(nameof(ContactsChannel), loggerFactory.CreateLogger(typeof(MessageChannel)));
             UserPresenceChannel = new MessageChannel(nameof(UserPresenceChannel), loggerFactory.CreateLogger(typeof(MessageChannel)));
+            ConversationHistoryChannel = new MessageChannel(nameof(ConversationHistoryChannel), loggerFactory.CreateLogger(typeof(MessageChannel)));
+            ConversationChatHistoryChannel = new MessageChannel(nameof(ConversationChatHistoryChannel), loggerFactory.CreateLogger(typeof(MessageChannel)));
 
-            CallSignalingChannel.MessagePublished += CallSignalingChannelOnMessagePublished;
             EventChannel.MessagePublished += EventChannelOnMessagePublished;
+            CallSignalingChannel.MessagePublished += CallSignalingChannelOnMessagePublished;
             PropertiesChannel.MessagePublished += PropertiesChannelOnMessagePublished;
             ProfilesChannel.MessagePublished += ProfilesChannelOnMessagePublished;
             ContactsChannel.MessagePublished += ContactsChannelOnMessagePublished;
             UserPresenceChannel.MessagePublished += UserPresenceChannelOnMessagePublished;
+            ConversationHistoryChannel.MessagePublished += ConversationHistoryChannelOnMessagePublished;
+            ConversationChatHistoryChannel.MessagePublished += ConversationChatHistoryChannelOnMessagePublished;
+        }
+
+        private void ConversationChatHistoryChannelOnMessagePublished(object sender, PublishMessageEventArgs e)
+        {
+            var frame = JsonConvert.DeserializeObject<MessagesFrame>(e.Message);
+
+            if (frame?.Messages != null)
+            {
+                _logger.LogInformation("Received {numberOfMessages} messages of past conversations", frame.Messages.Length);
+            }
+        }
+
+        private void ConversationHistoryChannelOnMessagePublished(object sender, PublishMessageEventArgs e)
+        {
+            var frame = JsonConvert.DeserializeObject<ConversationsFrame>(e.Message);
+
+            if (frame?.conversations != null)
+            {
+                _logger.LogInformation("Received {numberOfPastConversations} past conversations", frame.conversations.Length);
+            }
         }
 
         private void ContactsChannelOnMessagePublished(object sender, PublishMessageEventArgs e)
@@ -197,6 +225,8 @@ namespace Skype.Client
 
         private bool HandleCustomUserProperties(EventMessage eventMessage)
         {
+            if (!(eventMessage.Resource is CustomUserPropertiesResource res)) return false;
+
             return true;
         }
 
